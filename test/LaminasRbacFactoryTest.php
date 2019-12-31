@@ -1,23 +1,24 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-authorization-rbac for the canonical source repository
- * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authorization-rbac/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-authorization-rbac for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-authorization-rbac/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace ZendTest\Expressive\Authorization\Rbac;
+namespace MezzioTest\Authorization\Rbac;
 
+use Mezzio\Authorization\Exception;
+use Mezzio\Authorization\Rbac\LaminasRbac;
+use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
+use Mezzio\Authorization\Rbac\LaminasRbacFactory;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Authorization\Exception;
-use Zend\Expressive\Authorization\Rbac\ZendRbac;
-use Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface;
-use Zend\Expressive\Authorization\Rbac\ZendRbacFactory;
 
-class ZendRbacFactoryTest extends TestCase
+class LaminasRbacFactoryTest extends TestCase
 {
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
@@ -31,17 +32,17 @@ class ZendRbacFactoryTest extends TestCase
     {
         $this->container->get('config')->willReturn([]);
 
-        $factory = new ZendRbacFactory();
+        $factory = new LaminasRbacFactory();
 
         $this->expectException(Exception\InvalidConfigException::class);
         $factory($this->container->reveal());
     }
 
-    public function testFactoryWithoutZendRbacConfig()
+    public function testFactoryWithoutLaminasRbacConfig()
     {
         $this->container->get('config')->willReturn(['authorization' => []]);
 
-        $factory = new ZendRbacFactory();
+        $factory = new LaminasRbacFactory();
 
         $this->expectException(Exception\InvalidConfigException::class);
         $factory($this->container->reveal());
@@ -55,7 +56,7 @@ class ZendRbacFactoryTest extends TestCase
             ]
         ]);
 
-        $factory = new ZendRbacFactory();
+        $factory = new LaminasRbacFactory();
 
         $this->expectException(Exception\InvalidConfigException::class);
         $factory($this->container->reveal());
@@ -69,11 +70,12 @@ class ZendRbacFactoryTest extends TestCase
                 'permissions' => []
             ]
         ]);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(false);
+        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(false);
+        $this->container->has(\Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface::class)->willReturn(false);
 
-        $factory = new ZendRbacFactory();
-        $zendRbac = $factory($this->container->reveal());
-        $this->assertInstanceOf(ZendRbac::class, $zendRbac);
+        $factory = new LaminasRbacFactory();
+        $laminasRbac = $factory($this->container->reveal());
+        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
     }
 
     public function testFactoryWithEmptyRolesPermissionsWithAssertion()
@@ -85,13 +87,13 @@ class ZendRbacFactoryTest extends TestCase
             ]
         ]);
 
-        $assertion = $this->prophesize(ZendRbacAssertionInterface::class);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(true);
-        $this->container->get(ZendRbacAssertionInterface::class)->willReturn($assertion->reveal());
+        $assertion = $this->prophesize(LaminasRbacAssertionInterface::class);
+        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(true);
+        $this->container->get(LaminasRbacAssertionInterface::class)->willReturn($assertion->reveal());
 
-        $factory = new ZendRbacFactory();
-        $zendRbac = $factory($this->container->reveal());
-        $this->assertInstanceOf(ZendRbac::class, $zendRbac);
+        $factory = new LaminasRbacFactory();
+        $laminasRbac = $factory($this->container->reveal());
+        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
     }
 
     public function testFactoryWithoutAssertion()
@@ -117,11 +119,12 @@ class ZendRbacFactoryTest extends TestCase
                 ],
             ],
         ]);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(false);
+        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(false);
+        $this->container->has(\Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface::class)->willReturn(false);
 
-        $factory = new ZendRbacFactory();
-        $zendRbac = $factory($this->container->reveal());
-        $this->assertInstanceOf(ZendRbac::class, $zendRbac);
+        $factory = new LaminasRbacFactory();
+        $laminasRbac = $factory($this->container->reveal());
+        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
     }
 
     public function testFactoryWithAssertion()
@@ -147,13 +150,13 @@ class ZendRbacFactoryTest extends TestCase
                 ],
             ],
         ]);
-        $assertion = $this->prophesize(ZendRbacAssertionInterface::class);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(true);
-        $this->container->get(ZendRbacAssertionInterface::class)->willReturn($assertion->reveal());
+        $assertion = $this->prophesize(LaminasRbacAssertionInterface::class);
+        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(true);
+        $this->container->get(LaminasRbacAssertionInterface::class)->willReturn($assertion->reveal());
 
-        $factory = new ZendRbacFactory();
-        $zendRbac = $factory($this->container->reveal());
-        $this->assertInstanceOf(ZendRbac::class, $zendRbac);
+        $factory = new LaminasRbacFactory();
+        $laminasRbac = $factory($this->container->reveal());
+        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
     }
 
     public function testFactoryWithInvalidRole()
@@ -166,9 +169,10 @@ class ZendRbacFactoryTest extends TestCase
                 'permissions' => [],
             ],
         ]);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(false);
+        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(false);
+        $this->container->has(\Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface::class)->willReturn(false);
 
-        $factory = new ZendRbacFactory();
+        $factory = new LaminasRbacFactory();
 
         $this->expectException(Exception\InvalidConfigException::class);
         $factory($this->container->reveal());
@@ -189,9 +193,10 @@ class ZendRbacFactoryTest extends TestCase
                 ]
             ]
         ]);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(false);
+        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(false);
+        $this->container->has(\Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface::class)->willReturn(false);
 
-        $factory = new ZendRbacFactory();
+        $factory = new LaminasRbacFactory();
 
         $this->expectException(Exception\InvalidConfigException::class);
         $factory($this->container->reveal());
