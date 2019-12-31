@@ -6,9 +6,12 @@
  * @license   https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md New BSD License
  */
 
-namespace Mezzio\Authorization\Rbac\Exception;
+namespace Mezzio\Authorization\Rbac;
 
-class RuntimeException extends \RuntimeException implements
-    ExceptionInterface
+use Laminas\Permissions\Rbac\AssertionInterface as AssertionInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+interface LaminasRbacAssertionInterface extends AssertionInterface
 {
+    public function setRequest(ServerRequestInterface $request): void;
 }

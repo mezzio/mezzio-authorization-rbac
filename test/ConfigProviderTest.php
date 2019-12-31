@@ -1,14 +1,15 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-authorization-rbac for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authorization-rbac/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-authorization-rbac for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-authorization-rbac/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md New BSD License
  */
 
-namespace ZendTest\Expressive\Authorization\Rbac;
+namespace MezzioTest\Authorization\Rbac;
 
+use Mezzio\Authorization\Rbac\ConfigProvider;
 use PHPUnit\Framework\TestCase;
-use Zend\Expressive\Authorization\Rbac\ConfigProvider;
 
 class ConfigProviderTest extends TestCase
 {

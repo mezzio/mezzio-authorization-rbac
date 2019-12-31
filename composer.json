@@ -1,59 +1,58 @@
 {
-    "name": "zendframework/zend-expressive-authorization-rbac",
+    "name": "mezzio/mezzio-authorization-rbac",
     "description": "Description of project goes here",
-    "type": "library",
     "license": "BSD-3-Clause",
     "keywords": [
+        "laminas",
+        "mezzio",
         "authorization",
-        "expressive",
         "psr-7",
-        "rbac",
-        "zf",
-        "zendframework",
-        "zend-expressive"
+        "rbac"
     ],
+    "homepage": "https://mezzio.dev",
     "support": {
-        "docs": "https://docs.zendframework.com/zend-expressive-authorization-rbac/",
-        "issues": "https://github.com/zendframework/zend-expressive-authorization-rbac/issues",
-        "source": "https://github.com/zendframework/zend-expressive-authorization-rbac",
-        "slack": "https://zendframework-slack.herokuapp.com",
-        "forum": "https://discourse.zendframework.com/c/questions/expressive"
+        "docs": "https://docs.mezzio.dev/mezzio-authorization-rbac/",
+        "issues": "https://github.com/mezzio/mezzio-authorization-rbac/issues",
+        "source": "https://github.com/mezzio/mezzio-authorization-rbac",
+        "rss": "https://github.com/mezzio/mezzio-authorization-rbac/releases.atom",
+        "chat": "https://laminas.dev/chat",
+        "forum": "https://discourse.laminas.dev"
     },
     "config": {
         "sort-packages": true
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "laminas": {
+            "config-provider": "Mezzio\\Authorization\\Rbac\\ConfigProvider"
+        }
+    },
     "require": {
         "php": "^7.1",
+        "laminas/laminas-permissions-rbac": "^2.5.1",
+        "laminas/laminas-zendframework-bridge": "^1.0",
+        "mezzio/mezzio-authorization": "^0.1 || ^1.0",
+        "mezzio/mezzio-router": "^2.1",
         "psr/container": "^1.0",
-        "psr/http-message": "^1.0.1",
-        "zendframework/zend-expressive-authorization": "^0.1 || ^1.0",
-        "zendframework/zend-expressive-router": "^2.1",
-        "zendframework/zend-permissions-rbac": "^2.5.1"
+        "psr/http-message": "^1.0.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0.8",
-        "roave/security-advisories": "dev-master",
-        "zendframework/zend-coding-standard": "^1.0"
+        "laminas/laminas-coding-standard": "^1.0",
+        "phpunit/phpunit": "^6.0.8"
     },
     "conflict": {
         "container-interop/container-interop": "<1.2.0"
     },
     "autoload": {
         "psr-4": {
-            "Zend\\Expressive\\Authorization\\Rbac\\": "src/"
+            "Mezzio\\Authorization\\Rbac\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ZendTest\\Expressive\\Authorization\\Rbac\\": "test/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0-dev"
-        },
-        "zf": {
-            "config-provider": "Zend\\Expressive\\Authorization\\Rbac\\ConfigProvider"
+            "MezzioTest\\Authorization\\Rbac\\": "test/"
         }
     },
     "scripts": {
@@ -66,5 +65,8 @@
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
         "upload-coverage": "coveralls -v"
+    },
+    "replace": {
+        "zendframework/zend-expressive-authorization-rbac": "self.version"
     }
 }
