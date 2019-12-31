@@ -1,19 +1,20 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-authorization for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authorization/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-authorization-rbac for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-authorization-rbac/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Expressive\Authorization\Rbac;
+namespace Mezzio\Authorization\Rbac;
 
+use Laminas\Permissions\Rbac\AssertionInterface;
+use Laminas\Permissions\Rbac\Rbac;
+use Mezzio\Authorization\AuthorizationInterface;
+use Mezzio\Router\RouteResult;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Authorization\AuthorizationInterface;
-use Zend\Expressive\Router\RouteResult;
-use Zend\Permissions\Rbac\AssertionInterface;
-use Zend\Permissions\Rbac\Rbac;
 
-class ZendRbac implements AuthorizationInterface
+class LaminasRbac implements AuthorizationInterface
 {
     /**
      * @var Rbac
@@ -29,9 +30,9 @@ class ZendRbac implements AuthorizationInterface
      * Constructor
      *
      * @param Rbac $rbac
-     * @param ZendRbacAssertionInterface $assertion
+     * @param LaminasRbacAssertionInterface $assertion
      */
-    public function __construct(Rbac $rbac, ZendRbacAssertionInterface $assertion = null)
+    public function __construct(Rbac $rbac, LaminasRbacAssertionInterface $assertion = null)
     {
         $this->rbac = $rbac;
         $this->assertion = $assertion;
