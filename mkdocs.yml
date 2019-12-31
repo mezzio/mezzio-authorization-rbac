@@ -1,11 +1,10 @@
 docs_dir: docs/book
 site_dir: docs/html
-pages:
+nav:
     - index.md
     - Introduction: v1/intro.md
     - Reference:
         - 'Dynamic assertion': v1/dynamic-assertion.md
-site_name: zend-expressive-authorization-rbac
-site_description: 'RBAC authorization middleware for Expressive and PSR-7 applications'
-repo_url: 'https://github.com/zendframework/zend-expressive-authorization-rbac'
-copyright: 'Copyright (c) 2018 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
+site_name: mezzio-authorization-rbac
+site_description: 'RBAC authorization middleware for Mezzio and PSR-7 applications'
+repo_url: 'https://github.com/mezzio/mezzio-authorization-rbac'
