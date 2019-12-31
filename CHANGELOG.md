@@ -22,15 +22,15 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- [#11](https://github.com/zendframework/zend-expressive-authorization-rbac/pull/11)
+- [zendframework/zend-expressive-authorization-rbac#11](https://github.com/zendframework/zend-expressive-authorization-rbac/pull/11)
   fixes missing configuration factories key.
 
 ## 0.1.3 - 2017-12-13
 
 ### Added
 
-- [#9](https://github.com/zendframework/zend-expressive-authorization-rbac/pull/9)
-  adds support for the 1.0.0-dev branch of zend-expressive-authorization.
+- [zendframework/zend-expressive-authorization-rbac#9](https://github.com/zendframework/zend-expressive-authorization-rbac/pull/9)
+  adds support for the 1.0.0-dev branch of mezzio-authorization.
 
 ### Changed
 
@@ -52,7 +52,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Adds support for zend-expressive-authorization 0.2 and 0.3.
+- Adds support for mezzio-authorization 0.2 and 0.3.
 
 ### Changed
 

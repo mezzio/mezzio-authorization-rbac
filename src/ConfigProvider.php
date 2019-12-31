@@ -1,11 +1,12 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-authorization-rbac for the canonical source repository
- * @copyright Copyright (c) 2017 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authorization-rbac/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-authorization-rbac for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-authorization-rbac/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md New BSD License
  */
 
-namespace Zend\Expressive\Authorization\Rbac;
+namespace Mezzio\Authorization\Rbac;
 
 class ConfigProvider
 {
@@ -19,8 +20,12 @@ class ConfigProvider
     public function getDependencies() : array
     {
         return [
+            // Legacy Zend Framework aliases
+            'aliases' => [
+                \Zend\Expressive\Authorization\Rbac\ZendRbac::class => LaminasRbac::class,
+            ],
             'factories' => [
-                ZendRbac::class => ZendRbacFactory::class,
+                LaminasRbac::class => LaminasRbacFactory::class,
             ],
         ];
     }
