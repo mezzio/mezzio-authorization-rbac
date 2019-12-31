@@ -1,18 +1,19 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-authorization-rbac for the canonical source repository
- * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authorization-rbac/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-authorization-rbac for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-authorization-rbac/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace ZendTest\Expressive\Authorization\Rbac;
+namespace MezzioTest\Authorization\Rbac;
 
+use Laminas\ServiceManager\ServiceManager;
+use Mezzio\Authorization\Rbac\ConfigProvider;
+use Mezzio\Authorization\Rbac\LaminasRbac;
 use PHPUnit\Framework\TestCase;
-use Zend\Expressive\Authorization\Rbac\ConfigProvider;
-use Zend\Expressive\Authorization\Rbac\ZendRbac;
-use Zend\ServiceManager\ServiceManager;
 
 use function array_merge_recursive;
 use function file_get_contents;
@@ -47,7 +48,7 @@ class ConfigProviderTest extends TestCase
 
         $factories = $config['dependencies']['factories'];
         $this->assertInternalType('array', $factories);
-        $this->assertArrayHasKey(ZendRbac::class, $factories);
+        $this->assertArrayHasKey(LaminasRbac::class, $factories);
     }
 
     public function testServicesDefinedInConfigProvider()
@@ -59,8 +60,8 @@ class ConfigProviderTest extends TestCase
             true
         );
         foreach ($json['packages'] as $package) {
-            if (isset($package['extra']['zf']['config-provider'])) {
-                $configProvider = new $package['extra']['zf']['config-provider']();
+            if (isset($package['extra']['laminas']['config-provider'])) {
+                $configProvider = new $package['extra']['laminas']['config-provider']();
                 $config = array_merge_recursive($config, $configProvider());
             }
         }

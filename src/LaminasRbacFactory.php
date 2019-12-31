@@ -1,23 +1,24 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-authorization-rbac for the canonical source repository
- * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authorization-rbac/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-authorization-rbac for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-authorization-rbac/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace Zend\Expressive\Authorization\Rbac;
+namespace Mezzio\Authorization\Rbac;
 
+use Laminas\Permissions\Rbac\Exception\ExceptionInterface as RbacExceptionInterface;
+use Laminas\Permissions\Rbac\Rbac;
+use Mezzio\Authorization\AuthorizationInterface;
+use Mezzio\Authorization\Exception;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Authorization\AuthorizationInterface;
-use Zend\Expressive\Authorization\Exception;
-use Zend\Permissions\Rbac\Exception\ExceptionInterface as RbacExceptionInterface;
-use Zend\Permissions\Rbac\Rbac;
 
 use function sprintf;
 
-class ZendRbacFactory
+class LaminasRbacFactory
 {
     /**
      * @throws Exception\InvalidConfigException
@@ -28,19 +29,19 @@ class ZendRbacFactory
         if (null === $config) {
             throw new Exception\InvalidConfigException(sprintf(
                 'Cannot create %s instance; no "authorization" config key present',
-                ZendRbac::class
+                LaminasRbac::class
             ));
         }
         if (! isset($config['roles'])) {
             throw new Exception\InvalidConfigException(sprintf(
                 'Cannot create %s instance; no authorization.roles configured',
-                ZendRbac::class
+                LaminasRbac::class
             ));
         }
         if (! isset($config['permissions'])) {
             throw new Exception\InvalidConfigException(sprintf(
                 'Cannot create %s instance; no authorization.permissions configured',
-                ZendRbac::class
+                LaminasRbac::class
             ));
         }
 
@@ -48,11 +49,13 @@ class ZendRbacFactory
         $this->injectRoles($rbac, $config['roles']);
         $this->injectPermissions($rbac, $config['permissions']);
 
-        $assertion = $container->has(ZendRbacAssertionInterface::class)
-            ? $container->get(ZendRbacAssertionInterface::class)
-            : null;
+        $assertion = $container->has(LaminasRbacAssertionInterface::class)
+            ? $container->get(LaminasRbacAssertionInterface::class)
+            : ($container->has(\Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface::class)
+                ? $container->get(\Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface::class)
+                : null);
 
-        return new ZendRbac($rbac, $assertion);
+        return new LaminasRbac($rbac, $assertion);
     }
 
     /**
