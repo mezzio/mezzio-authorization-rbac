@@ -5,29 +5,29 @@ For instance, imagine that you have an "editor" role that can add/update/delete
 a page in a Content Management System (CMS). We want to prevent an "editor" from
 modifying pages they have not created.
 
-These types of authorization are called [dynamic assertions](https://docs.zendframework.com/zend-permissions-rbac/examples/#dynamic-assertions)
-and are implemented via the `Zend\Permissions\Rbac\AssertionInterface` of
-[zend-permissions-rbac](https://github.com/zendframework/zend-permissions-rbac).
+These types of authorization are called [dynamic assertions](https://docs.laminas.dev/laminas-permissions-rbac/examples/#dynamic-assertions)
+and are implemented via the `Laminas\Permissions\Rbac\AssertionInterface` of
+[laminas-permissions-rbac](https://github.com/laminas/laminas-permissions-rbac).
 
-In order to use it, this package provides `ZendRbacAssertionInterface`,
-which extends `Zend\Permissions\Rbac\AssertionInterface`:
+In order to use it, this package provides `LaminasRbacAssertionInterface`,
+which extends `Laminas\Permissions\Rbac\AssertionInterface`:
 
 ```php
-namespace Zend\Expressive\Authorization\Rbac;
+namespace Mezzio\Authorization\Rbac;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Permissions\Rbac\AssertionInterface;
+use Laminas\Permissions\Rbac\AssertionInterface;
 
-interface ZendRbacAssertionInterface extends AssertionInterface
+interface LaminasRbacAssertionInterface extends AssertionInterface
 {
     public function setRequest(ServerRequestInterface $request) : void;
 }
 ```
 
-The `Zend\Permissions\Rbac\AssertionInterface` defines the following:
+The `Laminas\Permissions\Rbac\AssertionInterface` defines the following:
 
 ```php
-namespace Zend\Permissions\Rbac;
+namespace Laminas\Permissions\Rbac;
 
 interface AssertionInterface
 {
@@ -39,10 +39,10 @@ Going back to our use case, we can build a class to manage the "editor"
 authorization requirements, as follows:
 
 ```php
-use Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface;
+use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
 use App\Service\Article;
 
-class EditorAuth implements ZendRbacAssertionInterface
+class EditorAuth implements LaminasRbacAssertionInterface
 {
     public function __construct(Article $article)
     {
