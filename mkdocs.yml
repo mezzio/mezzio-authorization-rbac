@@ -1,10 +1,12 @@
 docs_dir: docs/book
 site_dir: docs/html
 nav:
-    - Home: index.md
-    - Introduction: v1/intro.md
-    - Reference:
-        - 'Dynamic Assertion': v1/dynamic-assertion.md
+    - { Home: index.md }
+    - { Introduction: v1/intro.md }
+    - { Reference: [{ 'Dynamic Assertion': v1/dynamic-assertion.md }] }
 site_name: mezzio-authorization-rbac
 site_description: 'RBAC permission adapter for mezzio-authorization.'
 repo_url: 'https://github.com/mezzio/mezzio-authorization-rbac'
+extra:
+    project: Mezzio
+    project_url: 'https://docs.mezzio.dev'
