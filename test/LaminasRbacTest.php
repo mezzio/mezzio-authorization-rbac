@@ -1,64 +1,65 @@
 <?php
+
 /**
- * @see       https://github.com/zendframework/zend-expressive-authorization-rbac for the canonical source repository
- * @copyright Copyright (c) 2017-2018 Zend Technologies USA Inc. (https://www.zend.com)
- * @license   https://github.com/zendframework/zend-expressive-authorization-rbac/blob/master/LICENSE.md New BSD License
+ * @see       https://github.com/mezzio/mezzio-authorization-rbac for the canonical source repository
+ * @copyright https://github.com/mezzio/mezzio-authorization-rbac/blob/master/COPYRIGHT.md
+ * @license   https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md New BSD License
  */
 
 declare(strict_types=1);
 
-namespace ZendTest\Expressive\Authorization\Rbac;
+namespace MezzioTest\Authorization\Rbac;
 
+use Laminas\Permissions\Rbac\Rbac;
+use Mezzio\Authorization\Exception;
+use Mezzio\Authorization\Rbac\LaminasRbac;
+use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
+use Mezzio\Router\RouteResult;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Expressive\Authorization\Exception;
-use Zend\Expressive\Authorization\Rbac\ZendRbac;
-use Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface;
-use Zend\Expressive\Router\RouteResult;
-use Zend\Permissions\Rbac\Rbac;
 
-class ZendRbacTest extends TestCase
+class LaminasRbacTest extends TestCase
 {
     /** @var Rbac|ObjectProphecy */
     private $rbac;
 
-    /** @var ZendRbacAssertionInterface|ObjectProphecy */
+    /** @var LaminasRbacAssertionInterface|ObjectProphecy */
     private $assertion;
 
     protected function setUp()
     {
         $this->rbac = $this->prophesize(Rbac::class);
-        $this->assertion = $this->prophesize(ZendRbacAssertionInterface::class);
+        $this->assertion = $this->prophesize(LaminasRbacAssertionInterface::class);
     }
 
     public function testConstructorWithoutAssertion()
     {
-        $zendRbac = new ZendRbac($this->rbac->reveal());
-        $this->assertInstanceOf(ZendRbac::class, $zendRbac);
+        $laminasRbac = new LaminasRbac($this->rbac->reveal());
+        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
     }
 
     public function testConstructorWithAssertion()
     {
-        $zendRbac = new ZendRbac($this->rbac->reveal(), $this->assertion->reveal());
-        $this->assertInstanceOf(ZendRbac::class, $zendRbac);
+        $laminasRbac = new LaminasRbac($this->rbac->reveal(), $this->assertion->reveal());
+        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
     }
 
     public function testIsGrantedWithoutRouteResult()
     {
-        $zendRbac = new ZendRbac($this->rbac->reveal(), $this->assertion->reveal());
+        $laminasRbac = new LaminasRbac($this->rbac->reveal(), $this->assertion->reveal());
 
         $request = $this->prophesize(ServerRequestInterface::class);
         $request->getAttribute(RouteResult::class, false)->willReturn(false);
 
         $this->expectException(Exception\RuntimeException::class);
-        $zendRbac->isGranted('foo', $request->reveal());
+        $laminasRbac->isGranted('foo', $request->reveal());
     }
 
     public function testIsGrantedWithoutAssertion()
     {
         $this->rbac->isGranted('foo', 'home', null)->willReturn(true);
-        $zendRbac = new ZendRbac($this->rbac->reveal());
+        $laminasRbac = new LaminasRbac($this->rbac->reveal());
 
         $routeResult = $this->prophesize(RouteResult::class);
         $routeResult->getMatchedRouteName()->willReturn('home');
@@ -67,14 +68,14 @@ class ZendRbacTest extends TestCase
         $request->getAttribute(RouteResult::class, false)
                 ->willReturn($routeResult->reveal());
 
-        $result = $zendRbac->isGranted('foo', $request->reveal());
+        $result = $laminasRbac->isGranted('foo', $request->reveal());
         $this->assertTrue($result);
     }
 
     public function testIsNotGrantedWithoutAssertion()
     {
         $this->rbac->isGranted('foo', 'home', null)->willReturn(false);
-        $zendRbac = new ZendRbac($this->rbac->reveal());
+        $laminasRbac = new LaminasRbac($this->rbac->reveal());
 
         $routeResult = $this->prophesize(RouteResult::class);
         $routeResult->getMatchedRouteName()->willReturn('home');
@@ -83,7 +84,7 @@ class ZendRbacTest extends TestCase
         $request->getAttribute(RouteResult::class, false)
                 ->willReturn($routeResult->reveal());
 
-        $result = $zendRbac->isGranted('foo', $request->reveal());
+        $result = $laminasRbac->isGranted('foo', $request->reveal());
         $this->assertFalse($result);
     }
 
@@ -98,9 +99,9 @@ class ZendRbacTest extends TestCase
 
         $this->rbac->isGranted('foo', 'home', $this->assertion->reveal())->willReturn(true);
 
-        $zendRbac = new ZendRbac($this->rbac->reveal(), $this->assertion->reveal());
+        $laminasRbac = new LaminasRbac($this->rbac->reveal(), $this->assertion->reveal());
 
-        $result = $zendRbac->isGranted('foo', $request->reveal());
+        $result = $laminasRbac->isGranted('foo', $request->reveal());
         $this->assertTrue($result);
         $this->assertion->setRequest($request->reveal())->shouldBeCalled();
     }
@@ -116,9 +117,9 @@ class ZendRbacTest extends TestCase
 
         $this->rbac->isGranted('foo', 'home', $this->assertion->reveal())->willReturn(false);
 
-        $zendRbac = new ZendRbac($this->rbac->reveal(), $this->assertion->reveal());
+        $laminasRbac = new LaminasRbac($this->rbac->reveal(), $this->assertion->reveal());
 
-        $result = $zendRbac->isGranted('foo', $request->reveal());
+        $result = $laminasRbac->isGranted('foo', $request->reveal());
         $this->assertFalse($result);
         $this->assertion->setRequest($request->reveal())->shouldBeCalled();
     }
