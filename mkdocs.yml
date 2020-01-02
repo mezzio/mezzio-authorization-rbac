@@ -8,3 +8,6 @@ nav:
 site_name: mezzio-authorization-rbac
 site_description: 'RBAC permission adapter for mezzio-authorization.'
 repo_url: 'https://github.com/mezzio/mezzio-authorization-rbac'
+extra:
+    project: Mezzio
+    project_url: 'https://docs.mezzio.dev'
