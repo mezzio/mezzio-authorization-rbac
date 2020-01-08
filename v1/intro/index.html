@@ -20,7 +20,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../../img/laminas-foundation-white.svg" height="28" alt="Lamnias">
+            <img src="../../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -36,13 +36,17 @@
             
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="https://getlaminas.org/about" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://getlaminas.org/blog" class="nav-link">Blog</a>
-                </li>
-                <li class="nav-item">
-                    <a href="https://docs.laminas.dev" class="nav-link">All Docs</a>
+                    <div class="dropdown">
+                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
+                            All Docs
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="https://docs.laminas.dev/components">Components</a>
+                            <a class="dropdown-item" href="https://docs.mezzio.dev/">Mezzio</a>
+                            <a class="dropdown-item" href="https://api-tools.getlaminas.org/docs">API Tools</a>
+                            <a class="dropdown-item" href="https://docs.laminas.dev/mvc">MVC</a>
+                        </div>
+                    </div>
                 </li>
                 <li class="nav-item">
                     <a href="https://getlaminas.org/participate" class="nav-link">Community</a>
@@ -230,30 +234,29 @@ That library provides a PSR-7 request attribute named
 The RBAC system uses this instance to get information about the user's identity.</p>
 <h2 id="configure-an-rbac-system">Configure an RBAC system</h2>
 <p>You can configure your RBAC using a configuration file, as follows:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>// config/autoload/authorization.local.php</span>
-<span class=x>return [</span>
-<span class=x>    // ...</span>
-<span class=x>    &#39;mezzio-authorization-rbac&#39; =&gt; [</span>
-<span class=x>        &#39;roles&#39; =&gt; [</span>
-<span class=x>            &#39;administrator&#39; =&gt; [],</span>
-<span class=x>            &#39;editor&#39;        =&gt; [&#39;administrator&#39;],</span>
-<span class=x>            &#39;contributor&#39;   =&gt; [&#39;editor&#39;],</span>
-<span class=x>        ],</span>
-<span class=x>        &#39;permissions&#39; =&gt; [</span>
-<span class=x>            &#39;contributor&#39; =&gt; [</span>
-<span class=x>                &#39;admin.dashboard&#39;,</span>
-<span class=x>                &#39;admin.posts&#39;,</span>
-<span class=x>            ],</span>
-<span class=x>            &#39;editor&#39; =&gt; [</span>
-<span class=x>                &#39;admin.publish&#39;,</span>
-<span class=x>            ],</span>
-<span class=x>            &#39;administrator&#39; =&gt; [</span>
-<span class=x>                &#39;admin.settings&#39;,</span>
-<span class=x>            ],</span>
-<span class=x>        ],</span>
-<span class=x>    ]</span>
-<span class=x>];</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>// config/autoload/authorization.local.php
+return [
+    // ...
+    'mezzio-authorization-rbac' =&gt; [
+        'roles' =&gt; [
+            'administrator' =&gt; [],
+            'editor'        =&gt; ['administrator'],
+            'contributor'   =&gt; ['editor'],
+        ],
+        'permissions' =&gt; [
+            'contributor' =&gt; [
+                'admin.dashboard',
+                'admin.posts',
+            ],
+            'editor' =&gt; [
+                'admin.publish',
+            ],
+            'administrator' =&gt; [
+                'admin.settings',
+            ],
+        ],
+    ]
+];</code></pre>
 <p>In the above example, we designed an RBAC system with 3 roles: <code>administator</code>,
 <code>editor</code>, and <code>contributor</code>. We defined a hierarchy of roles as follows:</p>
 <ul>
@@ -273,8 +276,7 @@ routes <code>admin.publish</code> (assigned to <code>editor</code> role) and <co
 <p>If you want to change the authorization logic for each permission, you can write
 your own <code>Mezzio\Authorization\AuthorizationInterface</code> implementation.
 That interface defines the following method:</p>
-<p> <div class=codehilite><pre><span></span><span class=x>isGranted(string $role, ServerRequestInterface $request) : bool</span>
-</pre></div></p>
+<pre class=codehilite><code class=language-php>isGranted(string $role, ServerRequestInterface $request) : bool</code></pre>
 <p>where <code>$role</code> is the role and <code>$request</code> is the PSR-7 HTTP request to authorize.</p>
 <blockquote>
 <p>This library uses the <a href="https://docs.laminas.dev/laminas-permissions-rbac/">laminas/laminas-permissions-rbac</a>
@@ -403,9 +405,10 @@ of this library, read the blog post
             <div class="col-md-7 offset-md-2">
                 <h5>Laminas</h5>
                 <ul>
-                    <li>Laminas Project <a href="https://getlaminas.org/">Components and MVC for Enterprise Applications</a></li>
-                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 Middleware in Minutes</a></li>
-                    <li>Laminas API Tools: <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
+                    <li>Laminas Project <a href="https://getlaminas.org/">The new foundation for the community-supported, open source continuation of Zend Framework</a></li>
+                    <li>Laminas Components and MVC <a href="https://docs.laminas.dev/">Components and MVC for enterprise applications</a></li>
+                    <li>Mezzio <a href="https://docs.mezzio.dev/">PSR-15 middleware in minutes</a></li>
+                    <li>Laminas API Tools <a href="https://api-tools.getlaminas.org/">Build RESTful APIs in minutes</a></li>
                 </ul>
             </div>
         </div>
@@ -442,7 +445,7 @@ of this library, read the blog post
                 <h4 class="footer__headline">License</h4>
                 <p>
                     Code licensed under <a
-                        href="https://github.com/mezzio/mezzio-authorization-rbac//blob/master/LICENSE.md">BSD 3-Clause</a>.
+                        href="https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md">BSD 3-Clause</a>.
                 </p>
             </div>
 
@@ -451,8 +454,8 @@ of this library, read the blog post
                 <h4 class="footer__headline">Copyright</h4>
                 <p>
                     <!--Built with love by the Laminas team with the help of our
-                    <a href="https://github.com/mezzio/mezzio-authorization-rbac//graphs/contributors">contributors</a>.<br>-->
-                    &copy; 2019-2019 by <a href="https://getlaminas.org/">The Laminas Project</a>.
+                    <a href="https://github.com/mezzio/mezzio-authorization-rbac/graphs/contributors">contributors</a>.<br>-->
+                    &copy; 2019-2020 by <a href="https://getlaminas.org/">The Laminas Project</a>.
                 </p>
             </div>
         </div>

@@ -6,10 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="RBAC permission adapter for mezzio-authorization.">  
-    <link rel="canonical" href="https://docs.mezzio.dev/v1/dynamic-assertion/">
     <link rel="shortcut icon" href="/img/trademark-laminas-foundation-rgb.svg">
 
-    <title>Dynamic Assertion - mezzio-authorization-rbac - Laminas Docs</title>
+    <title>mezzio-authorization-rbac - Laminas Docs</title>
 
     <link rel="stylesheet" href="/css/styles.css">
 </head>
@@ -20,7 +19,7 @@
     <div class="container">
         
         <a class="logo-link navbar-brand offset-md-2" href="https://getlaminas.org/" data-tooltip data-placement="bottom" title="Go to the Laminas homepage">
-            <img src="../../img/laminas-foundation-white.svg" height="28" alt="Laminas">
+            <img src="../img/laminas-foundation-white.svg" height="28" alt="Laminas">
         </a>
         <a class="navbar-title" href="https://docs.laminas.dev/" data-tooltip data-placement="bottom" title="Go to the Laminas Documentation">
             Documentation
@@ -59,7 +58,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="../..">mezzio-authorization-rbac</a>
+            <a href="../.">mezzio-authorization-rbac</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -74,7 +73,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                                <a href="../v1/intro/" class="subnavigation__link">Introduction</a>
                             </li>
                         
                     
@@ -92,8 +91,8 @@
                                 <ul class="subnavigation__list">
                                     
                                         
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">Dynamic Assertion</a>
+    <li class="subnavigation__list-item ">
+        <a href="../v1/dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
     </li>
 
                                     
@@ -162,177 +161,21 @@
         <div class="row">
             <div class="col-md-2 col-sm-12">
                 
-    
-
-    
-    
-
             </div>
             <div class="col-md-7 col-sm-12 content" role="main" data-spy="scroll" data-target=".toc">
                 
-                    <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        
-            <li class="breadcrumb-item"><a href="">Overview</a></li>
 
-            
-                <li class="breadcrumb-item"><a href="../..">mezzio-authorization-rbac</a></li>
+<h1 class="content__title">404</h1>
+<blockquote>
+    <h3>Something went wrong!</h3>
+    <p>
+        We're sorry, but the page you are looking for does not exist.
+    </p>
+</blockquote>
 
-                
-                    
-                        
-                        
-                            <li class="breadcrumb-item">Reference</li>
-                        
-                    
-                
-
-                <li class="breadcrumb-item active" aria-current="page">Dynamic Assertion</li>
-            
-        
-    </ol>
-</nav>
+<a href="../." class="btn btn-default" role="button">Go to homepage</a>
 
 
-
-
-
-
-    
-    
-        <h2 class="chapter__headline">Reference</h2>
-    
-
-    <h1 id="dynamic-assertion">Dynamic Assertion</h1>
-<p>In some cases you will need to authorize a role based on a specific HTTP request.
-For instance, imagine that you have an "editor" role that can add/update/delete
-a page in a Content Management System (CMS). We want to prevent an "editor" from
-modifying pages they have not created.</p>
-<p>These types of authorization are called <a href="https://docs.laminas.dev/laminas-permissions-rbac/examples/#dynamic-assertions">dynamic assertions</a>
-and are implemented via the <code>Laminas\Permissions\Rbac\AssertionInterface</code> of
-<a href="https://github.com/laminas/laminas-permissions-rbac">laminas-permissions-rbac</a>.</p>
-<p>In order to use it, this package provides <code>LaminasRbacAssertionInterface</code>,
-which extends <code>Laminas\Permissions\Rbac\AssertionInterface</code>:</p>
-<pre class=codehilite><code class=language-php>namespace Mezzio\Authorization\Rbac;
-
-use Psr\Http\Message\ServerRequestInterface;
-use Laminas\Permissions\Rbac\AssertionInterface;
-
-interface LaminasRbacAssertionInterface extends AssertionInterface
-{
-    public function setRequest(ServerRequestInterface $request) : void;
-}</code></pre>
-<p>The <code>Laminas\Permissions\Rbac\AssertionInterface</code> defines the following:</p>
-<pre class=codehilite><code class=language-php>namespace Laminas\Permissions\Rbac;
-
-interface AssertionInterface
-{
-    public function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool;
-}</code></pre>
-<p>Going back to our use case, we can build a class to manage the "editor"
-authorization requirements, as follows:</p>
-<pre class=codehilite><code class=language-php>use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
-use App\Service\Article;
-
-class EditorAuth implements LaminasRbacAssertionInterface
-{
-    public function __construct(Article $article)
-    {
-        $this-&gt;article = $article;
-    }
-
-    public function setRequest(ServerRequestInterface $request)
-    {
-        $this-&gt;request = $request;
-    }
-
-    public function assert(Rbac $rbac, RoleInterface $role, string $permission)
-    {
-        $user = $this-&gt;request-&gt;getAttribute(UserInterface::class, false);
-        return $this-&gt;article-&gt;isUserOwner($user-&gt;getIdentity(), $this-&gt;request);
-    }
-}</code></pre>
-<p>Where <code>Article</code> is a class that checks if the identified user is the owner of
-the article referenced in the HTTP request.</p>
-<p>If you manage articles using a SQL database, the implementation of
-<code>isUserOwner()</code> might look like the following:</p>
-<pre class=codehilite><code class=language-php>public function isUserOwner(string $identity, ServerRequestInterface $request): bool
-{
-    // get the article {article_id} attribute specified in the route
-    $url = $request-&gt;getAttribute('article_id', false);
-    if (! $url) {
-        return false;
-    }
-    $sth = $this-&gt;pdo-&gt;prepare(
-        'SELECT * FROM article WHERE url = :url AND owner = :identity'
-    );
-    $sth-&gt;bindParam(':url', $url);
-    $sth-&gt;bindParam(':identity', $identity);
-    if (! $sth-&gt;execute()) {
-        return false;
-    }
-    $row = $sth-&gt;fetch();
-    return ! empty($row);
-}</code></pre>
-<p>To pass the <code>Article</code> dependency to your assertion, you can use a Factory class
-that generates the <code>EditorAuth</code> class instance, as follows:</p>
-<pre class=codehilite><code class=language-php>use App\Service\Article;
-
-class EditorAuthFactory
-{
-    public function __invoke(ContainerInterface $container) : EditorAuth
-    {
-        return new EditorAuth(
-            $container-&gt;get(Article::class)
-        );
-    }
-}</code></pre>
-<p>And configure the service container to use <code>EditorAuthFactory</code> to point to
-<code>EditorAuth</code>, using the following configuration:</p>
-<pre class=codehilite><code class=language-php>return [    
-    'dependencies' =&gt; [
-        'factories' =&gt; [
-            // ...
-            EditorAuth::class =&gt; EditorAuthFactory::class
-        ]
-    ]
-];</code></pre>
-
-
-
-
-    <nav>
-    <ul class="page-nav hidden-print">
-
-        
-        <li class="page-nav__item">
-            
-                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../intro/">
-                    <i class="fa fa-chevron-left"></i> Previous
-                </a>
-            
-        </li>
-
-        
-        <li class="page-nav__item">
-            
-        </li>
-    </ul>
-</nav>
-
-
-
-
-    <div class="help-wanted">
-        <p>
-            Found a mistake or want to contribute to the documentation?
-            <a href="https://github.com/mezzio/mezzio-authorization-rbac/edit/master/docs/book/v1/dynamic-assertion.md" target="_blank" class="help-wanted__link">
-                Edit this page on GitHub!
-            </a>
-        </p>
-    </div>
-
-                
             </div>
             <div class="col-md-3 col-sm-12 sidebar">
                 
@@ -347,7 +190,7 @@ class EditorAuthFactory
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href="../..">mezzio-authorization-rbac</a>
+            <a href="../.">mezzio-authorization-rbac</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -362,7 +205,7 @@ class EditorAuthFactory
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                                <a href="../v1/intro/" class="subnavigation__link">Introduction</a>
                             </li>
                         
                     
@@ -380,8 +223,8 @@ class EditorAuthFactory
                                 <ul class="subnavigation__list">
                                     
                                         
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">Dynamic Assertion</a>
+    <li class="subnavigation__list-item ">
+        <a href="../v1/dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
     </li>
 
                                     
@@ -472,12 +315,12 @@ class EditorAuthFactory
 </footer>
 
     <script>
-        let base_url = '../..',
+        let base_url = '..',
             project  = "mezzio",
             siteName = 'mezzio-authorization-rbac';
     </script>
     <script src="/js/scripts.js"></script>
-        <script src="../../search/main.js"></script>
+        <script src="../search/main.js"></script>
 
     
     <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
