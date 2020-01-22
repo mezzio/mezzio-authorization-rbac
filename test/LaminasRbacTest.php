@@ -123,4 +123,19 @@ class LaminasRbacTest extends TestCase
         $this->assertFalse($result);
         $this->assertion->setRequest($request->reveal())->shouldBeCalled();
     }
+
+    public function testIsGrantedWithFailedRouting()
+    {
+        $routeResult = $this->prophesize(RouteResult::class);
+        $routeResult->getMatchedRouteName()->willReturn(false);
+
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $request->getAttribute(RouteResult::class, false)
+            ->will([$routeResult, 'reveal']);
+
+        $laminasRbac = new LaminasRbac($this->rbac->reveal());
+
+        $result = $laminasRbac->isGranted('foo', $request->reveal());
+        $this->assertTrue($result);
+    }
 }
