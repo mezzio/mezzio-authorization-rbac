@@ -130,7 +130,7 @@ class LaminasRbacTest extends TestCase
         $this->assertTrue($result);
     }
 
-    private function getSuccessRouteResult(string $routeName)
+    private function getSuccessRouteResult(string $routeName): RouteResult
     {
         $route = $this->prophesize(Route::class);
         $route->getName()->willReturn($routeName);
@@ -138,7 +138,7 @@ class LaminasRbacTest extends TestCase
         return RouteResult::fromRoute($route->reveal());
     }
 
-    private function getFailureRouteResult(?array $methods)
+    private function getFailureRouteResult(?array $methods): RouteResult
     {
         return RouteResult::fromRouteFailure($methods);
     }
