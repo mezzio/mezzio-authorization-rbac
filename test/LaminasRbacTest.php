@@ -28,7 +28,7 @@ class LaminasRbacTest extends TestCase
     /** @var LaminasRbacAssertionInterface|ObjectProphecy */
     private $assertion;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->rbac = $this->prophesize(Rbac::class);
         $this->assertion = $this->prophesize(LaminasRbacAssertionInterface::class);

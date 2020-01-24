@@ -25,7 +25,7 @@ class ConfigProviderTest extends TestCase
     /** @var ConfigProvider */
     private $provider;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         $this->provider = new ConfigProvider();
     }
@@ -33,7 +33,7 @@ class ConfigProviderTest extends TestCase
     public function testInvocationReturnsArray()
     {
         $config = ($this->provider)();
-        $this->assertInternalType('array', $config);
+        $this->assertIsArray($config);
         return $config;
     }
 
@@ -43,11 +43,11 @@ class ConfigProviderTest extends TestCase
     public function testReturnedArrayContainsDependencies(array $config)
     {
         $this->assertArrayHasKey('dependencies', $config);
-        $this->assertInternalType('array', $config['dependencies']);
+        $this->assertIsArray($config['dependencies']);
         $this->assertArrayHasKey('factories', $config['dependencies']);
 
         $factories = $config['dependencies']['factories'];
-        $this->assertInternalType('array', $factories);
+        $this->assertIsArray($factories);
         $this->assertArrayHasKey(LaminasRbac::class, $factories);
     }
 
@@ -74,8 +74,7 @@ class ConfigProviderTest extends TestCase
         $dependencies = $this->provider->getDependencies();
         foreach ($dependencies['factories'] as $name => $factory) {
             $this->assertTrue($container->has($name), sprintf('Container does not contain service %s', $name));
-            $this->assertInternalType(
-                'object',
+            $this->assertIsObject(
                 $container->get($name),
                 sprintf('Cannot get service %s from container using factory %s', $name, $factory)
             );

@@ -42,7 +42,7 @@
     "require-dev": {
         "laminas/laminas-coding-standard": "~1.0.0",
         "laminas/laminas-servicemanager": "^3.3",
-        "phpunit/phpunit": "^7.0.2"
+        "phpunit/phpunit": "^7.5.20 || ^8.5.2"
     },
     "conflict": {
         "container-interop/container-interop": "<1.2.0"
