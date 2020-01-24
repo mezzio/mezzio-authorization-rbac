@@ -14,6 +14,7 @@ use Laminas\Permissions\Rbac\Rbac;
 use Mezzio\Authorization\Exception;
 use Mezzio\Authorization\Rbac\LaminasRbac;
 use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
+use Mezzio\Router\Route;
 use Mezzio\Router\RouteResult;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -61,12 +62,10 @@ class LaminasRbacTest extends TestCase
         $this->rbac->isGranted('foo', 'home', null)->willReturn(true);
         $laminasRbac = new LaminasRbac($this->rbac->reveal());
 
-        $routeResult = $this->prophesize(RouteResult::class);
-        $routeResult->getMatchedRouteName()->willReturn('home');
+        $routeResult = $this->getSuccessRouteResult('home');
 
         $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute(RouteResult::class, false)
-                ->willReturn($routeResult->reveal());
+        $request->getAttribute(RouteResult::class, false)->willReturn($routeResult);
 
         $result = $laminasRbac->isGranted('foo', $request->reveal());
         $this->assertTrue($result);
@@ -77,12 +76,10 @@ class LaminasRbacTest extends TestCase
         $this->rbac->isGranted('foo', 'home', null)->willReturn(false);
         $laminasRbac = new LaminasRbac($this->rbac->reveal());
 
-        $routeResult = $this->prophesize(RouteResult::class);
-        $routeResult->getMatchedRouteName()->willReturn('home');
+        $routeResult = $this->getSuccessRouteResult('home');
 
         $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute(RouteResult::class, false)
-                ->willReturn($routeResult->reveal());
+        $request->getAttribute(RouteResult::class, false)->willReturn($routeResult);
 
         $result = $laminasRbac->isGranted('foo', $request->reveal());
         $this->assertFalse($result);
@@ -90,12 +87,10 @@ class LaminasRbacTest extends TestCase
 
     public function testIsGrantedWitAssertion()
     {
-        $routeResult = $this->prophesize(RouteResult::class);
-        $routeResult->getMatchedRouteName()->willReturn('home');
+        $routeResult = $this->getSuccessRouteResult('home');
 
         $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute(RouteResult::class, false)
-                ->willReturn($routeResult->reveal());
+        $request->getAttribute(RouteResult::class, false)->willReturn($routeResult);
 
         $this->rbac->isGranted('foo', 'home', $this->assertion->reveal())->willReturn(true);
 
@@ -108,12 +103,10 @@ class LaminasRbacTest extends TestCase
 
     public function testIsNotGrantedWitAssertion()
     {
-        $routeResult = $this->prophesize(RouteResult::class);
-        $routeResult->getMatchedRouteName()->willReturn('home');
+        $routeResult = $this->getSuccessRouteResult('home');
 
         $request = $this->prophesize(ServerRequestInterface::class);
-        $request->getAttribute(RouteResult::class, false)
-                ->willReturn($routeResult->reveal());
+        $request->getAttribute(RouteResult::class, false)->willReturn($routeResult);
 
         $this->rbac->isGranted('foo', 'home', $this->assertion->reveal())->willReturn(false);
 
@@ -122,5 +115,31 @@ class LaminasRbacTest extends TestCase
         $result = $laminasRbac->isGranted('foo', $request->reveal());
         $this->assertFalse($result);
         $this->assertion->setRequest($request->reveal())->shouldBeCalled();
+    }
+
+    public function testIsGrantedWithFailedRouting()
+    {
+        $routeResult = $this->getFailureRouteResult(Route::HTTP_METHOD_ANY);
+
+        $request = $this->prophesize(ServerRequestInterface::class);
+        $request->getAttribute(RouteResult::class, false)->willReturn($routeResult);
+
+        $laminasRbac = new LaminasRbac($this->rbac->reveal());
+
+        $result = $laminasRbac->isGranted('foo', $request->reveal());
+        $this->assertTrue($result);
+    }
+
+    private function getSuccessRouteResult(string $routeName): RouteResult
+    {
+        $route = $this->prophesize(Route::class);
+        $route->getName()->willReturn($routeName);
+
+        return RouteResult::fromRoute($route->reveal());
+    }
+
+    private function getFailureRouteResult(?array $methods): RouteResult
+    {
+        return RouteResult::fromRouteFailure($methods);
     }
 }
