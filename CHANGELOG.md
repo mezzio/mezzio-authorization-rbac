@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#1](https://github.com/mezzio/mezzio-authorization-rbac/pull/1) fixes RBAC authorization adapter to grant access on request with failed routing.
 
 ## 1.0.2 - 2019-06-18
 
