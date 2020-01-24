@@ -52,6 +52,11 @@ class LaminasRbac implements AuthorizationInterface
             ));
         }
 
+        // No matching route. Everyone can access.
+        if ($routeResult->isFailure()) {
+            return true;
+        }
+
         $routeName = $routeResult->getMatchedRouteName();
         if (null !== $this->assertion) {
             $this->assertion->setRequest($request);
