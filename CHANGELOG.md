@@ -28,7 +28,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#2](https://github.com/mezzio/mezzio-authorization-rbac/pull/2) adds support for PHP 7.4.
 
 ### Changed
 
