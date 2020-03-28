@@ -69,6 +69,6 @@
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
     },
     "replace": {
-        "zendframework/zend-expressive-authorization-rbac": "self.version"
+        "zendframework/zend-expressive-authorization-rbac": "^1.0.2"
     }
 }
