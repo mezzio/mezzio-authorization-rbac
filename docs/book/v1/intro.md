@@ -1,7 +1,7 @@
 # Introduction
 
 This component provides [Role-Based Access Control](https://en.wikipedia.org/wiki/Role-based_access_control)
-(RBAC) authorization abstraction for the [mezzio-authorization](https://github.com/mezzio/mezzio-authentication)
+(RBAC) authorization abstraction for the [mezzio-authorization](https://github.com/mezzio/mezzio-authorization)
 library.
 
 RBAC is based on the idea of **roles**. In a web application, users have an
