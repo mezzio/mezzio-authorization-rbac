@@ -89,4 +89,4 @@ where `$role` is the role and `$request` is the PSR-7 HTTP request to authorize.
 > This library uses the [laminas/laminas-permissions-rbac](https://docs.laminas.dev/laminas-permissions-rbac/)
 > library to implement the RBAC system. If you want to know more about the usage
 > of this library, read the blog post 
-> [Manage permissions with laminas-permissions-rbac](https://getlaminas.org/blog/2017-04-27-laminas-permissions-rbac.html).
+> [Manage permissions with laminas-permissions-rbac](https://framework.zend.com/blog/2017-04-27-zend-permissions-rbac.html).
