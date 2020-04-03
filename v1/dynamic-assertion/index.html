@@ -272,7 +272,7 @@ and are implemented via the <code>Laminas\Permissions\Rbac\AssertionInterface</c
 <a href="https://github.com/laminas/laminas-permissions-rbac">laminas-permissions-rbac</a>.</p>
 <p>In order to use it, this package provides <code>LaminasRbacAssertionInterface</code>,
 which extends <code>Laminas\Permissions\Rbac\AssertionInterface</code>:</p>
-<pre class=codehilite><code class=language-php>namespace Mezzio\Authorization\Rbac;
+<pre class="highlight"><code class="language-php">namespace Mezzio\Authorization\Rbac;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Laminas\Permissions\Rbac\AssertionInterface;
@@ -281,16 +281,18 @@ interface LaminasRbacAssertionInterface extends AssertionInterface
 {
     public function setRequest(ServerRequestInterface $request) : void;
 }</code></pre>
+
 <p>The <code>Laminas\Permissions\Rbac\AssertionInterface</code> defines the following:</p>
-<pre class=codehilite><code class=language-php>namespace Laminas\Permissions\Rbac;
+<pre class="highlight"><code class="language-php">namespace Laminas\Permissions\Rbac;
 
 interface AssertionInterface
 {
     public function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool;
 }</code></pre>
+
 <p>Going back to our use case, we can build a class to manage the "editor"
 authorization requirements, as follows:</p>
-<pre class=codehilite><code class=language-php>use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
+<pre class="highlight"><code class="language-php">use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
 use App\Service\Article;
 
 class EditorAuth implements LaminasRbacAssertionInterface
@@ -311,11 +313,12 @@ class EditorAuth implements LaminasRbacAssertionInterface
         return $this-&gt;article-&gt;isUserOwner($user-&gt;getIdentity(), $this-&gt;request);
     }
 }</code></pre>
+
 <p>Where <code>Article</code> is a class that checks if the identified user is the owner of
 the article referenced in the HTTP request.</p>
 <p>If you manage articles using a SQL database, the implementation of
 <code>isUserOwner()</code> might look like the following:</p>
-<pre class=codehilite><code class=language-php>public function isUserOwner(string $identity, ServerRequestInterface $request): bool
+<pre class="highlight"><code class="language-php">public function isUserOwner(string $identity, ServerRequestInterface $request): bool
 {
     // get the article {article_id} attribute specified in the route
     $url = $request-&gt;getAttribute('article_id', false);
@@ -333,9 +336,10 @@ the article referenced in the HTTP request.</p>
     $row = $sth-&gt;fetch();
     return ! empty($row);
 }</code></pre>
+
 <p>To pass the <code>Article</code> dependency to your assertion, you can use a Factory class
 that generates the <code>EditorAuth</code> class instance, as follows:</p>
-<pre class=codehilite><code class=language-php>use App\Service\Article;
+<pre class="highlight"><code class="language-php">use App\Service\Article;
 
 class EditorAuthFactory
 {
@@ -346,9 +350,10 @@ class EditorAuthFactory
         );
     }
 }</code></pre>
+
 <p>And configure the service container to use <code>EditorAuthFactory</code> to point to
 <code>EditorAuth</code>, using the following configuration:</p>
-<pre class=codehilite><code class=language-php>return [    
+<pre class="highlight"><code class="language-php">return [    
     'dependencies' =&gt; [
         'factories' =&gt; [
             // ...

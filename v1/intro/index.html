@@ -293,7 +293,7 @@ That library provides a PSR-7 request attribute named
 The RBAC system uses this instance to get information about the user's identity.</p>
 <h2 id="configure-an-rbac-system">Configure an RBAC system</h2>
 <p>You can configure your RBAC using a configuration file, as follows:</p>
-<pre class=codehilite><code class=language-php>// config/autoload/authorization.local.php
+<pre class="highlight"><code class="language-php">// config/autoload/authorization.local.php
 return [
     // ...
     'mezzio-authorization-rbac' =&gt; [
@@ -316,6 +316,7 @@ return [
         ],
     ]
 ];</code></pre>
+
 <p>In the above example, we designed an RBAC system with 3 roles: <code>administator</code>,
 <code>editor</code>, and <code>contributor</code>. We defined a hierarchy of roles as follows:</p>
 <ul>
@@ -335,7 +336,8 @@ routes <code>admin.publish</code> (assigned to <code>editor</code> role) and <co
 <p>If you want to change the authorization logic for each permission, you can write
 your own <code>Mezzio\Authorization\AuthorizationInterface</code> implementation.
 That interface defines the following method:</p>
-<pre class=codehilite><code class=language-php>isGranted(string $role, ServerRequestInterface $request) : bool</code></pre>
+<pre class="highlight"><code class="language-php">isGranted(string $role, ServerRequestInterface $request) : bool</code></pre>
+
 <p>where <code>$role</code> is the role and <code>$request</code> is the PSR-7 HTTP request to authorize.</p>
 <blockquote>
 <p>This library uses the <a href="https://docs.laminas.dev/laminas-permissions-rbac/">laminas/laminas-permissions-rbac</a>
