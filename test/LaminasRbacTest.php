@@ -17,11 +17,14 @@ use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
 use Mezzio\Router\Route;
 use Mezzio\Router\RouteResult;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Http\Message\ServerRequestInterface;
 
 class LaminasRbacTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var Rbac|ObjectProphecy */
     private $rbac;
 
