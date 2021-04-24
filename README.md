@@ -1,7 +1,6 @@
 # mezzio-authorization-rbac
 
-[![Build Status](https://travis-ci.com/mezzio/mezzio-authorization-rbac.svg?branch=master)](https://travis-ci.com/mezzio/mezzio-authorization-rbac)
-[![Coverage Status](https://coveralls.io/repos/github/mezzio/mezzio-authorization-rbac/badge.svg?branch=master)](https://coveralls.io/github/mezzio/mezzio-authorization-rbac?branch=master)
+[![Build Status](https://github.com/mezzio/mezzio-authorization-rbac/workflows/continuous-integration.yml/badge.svg)](https://github.com/mezzio/mezzio-authorization-rbac/actions/workflows/continuous-integration.yml)
 
 This library provides a laminas-rbac adapter for mezzio-authorization.
 
