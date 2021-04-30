@@ -9,6 +9,8 @@ These types of authorization are called [dynamic assertions](https://docs.lamina
 and are implemented via the `Laminas\Permissions\Rbac\AssertionInterface` of
 [laminas-permissions-rbac](https://github.com/laminas/laminas-permissions-rbac).
 
+## Interfaces
+
 In order to use it, this package provides `LaminasRbacAssertionInterface`,
 which extends `Laminas\Permissions\Rbac\AssertionInterface`:
 
@@ -34,6 +36,8 @@ interface AssertionInterface
     public function assert(Rbac $rbac, RoleInterface $role, string $permission) : bool;
 }
 ```
+
+## Example
 
 Going back to our use case, we can build a class to manage the "editor"
 authorization requirements, as follows:

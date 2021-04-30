@@ -4,6 +4,8 @@ This component provides [Role-Based Access Control](https://en.wikipedia.org/wik
 (RBAC) authorization abstraction for the [mezzio-authorization](https://github.com/mezzio/mezzio-authorization)
 library.
 
+## Roles, Identities, Permissions
+
 RBAC is based on the idea of **roles**. In a web application, users have an
 **identity** (e.g. username, email, etc). Each identified user then has one or
 more roles (e.g. admin, editor, guest). Each role has a **permission** to
@@ -12,8 +14,8 @@ calls).
 
 In a typical RBAC system:
 
-- An **identity** has one or more roles.
 - A **role** requests access to a permission.
+- An **identity** has one or more roles.
 - A **permission** is given to a role.
 
 Thus, RBAC has the following model:
@@ -29,64 +31,8 @@ That library provides a PSR-7 request attribute named
 `Mezzio\Authentication\UserInterface` when a user is authenticated.
 The RBAC system uses this instance to get information about the user's identity.
 
-## Configure an RBAC system
-
-You can configure your RBAC using a configuration file, as follows:
-
-```php
-// config/autoload/authorization.local.php
-return [
-    // ...
-    'mezzio-authorization-rbac' => [
-        'roles' => [
-            'administrator' => [],
-            'editor'        => ['administrator'],
-            'contributor'   => ['editor'],
-        ],
-        'permissions' => [
-            'contributor' => [
-                'admin.dashboard',
-                'admin.posts',
-            ],
-            'editor' => [
-                'admin.publish',
-            ],
-            'administrator' => [
-                'admin.settings',
-            ],
-        ],
-    ]
-];
-```
-
-In the above example, we designed an RBAC system with 3 roles: `administator`,
-`editor`, and `contributor`. We defined a hierarchy of roles as follows:
-
-- `administrator` has no parent role.
-- `editor` has `administrator` as a parent. That means `administrator` inherits
-  the permissions of the `editor`.
-- `contributor` has `editor` as a parent. That means `editor` inherits the
-  permissions of `contributor`, and following the chain, `administator` inherits
-  the permissions of `contributor`.
-
-For each role, we specified an array of permissions. As you can notice, a
-permission is just a string; it can represent anything. In our implementation,
-this string represents a route name.  That means the `contributor` role can
-access the routes `admin.dashboard` and `admin.posts` but cannot access the
-routes `admin.publish` (assigned to `editor` role) and `admin.settings`
-(assigned to `administrator`).
-
-If you want to change the authorization logic for each permission, you can write
-your own `Mezzio\Authorization\AuthorizationInterface` implementation.
-That interface defines the following method:
-
-```php
-isGranted(string $role, ServerRequestInterface $request) : bool
-```
-
-where `$role` is the role and `$request` is the PSR-7 HTTP request to authorize.
-
+> ### laminas-permissions-rbac
+>
 > This library uses the [laminas/laminas-permissions-rbac](https://docs.laminas.dev/laminas-permissions-rbac/)
 > library to implement the RBAC system. If you want to know more about the usage
-> of this library, read the blog post 
-> [Manage permissions with laminas-permissions-rbac](https://framework.zend.com/blog/2017-04-27-zend-permissions-rbac.html).
+> of this library, read the blog post [Manage permissions with laminas-permissions-rbac](https://framework.zend.com/blog/2017-04-27-zend-permissions-rbac.html).
