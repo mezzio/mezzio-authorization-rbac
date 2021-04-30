@@ -15,11 +15,14 @@ use Mezzio\Authorization\Rbac\LaminasRbac;
 use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
 use Mezzio\Authorization\Rbac\LaminasRbacFactory;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
 
 class LaminasRbacFactoryTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var ContainerInterface|ObjectProphecy */
     private $container;
 
