@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="RBAC permission adapter for mezzio-authorization.">  
-    <link rel="canonical" href="https://docs.mezzio.dev/mezzio-authorization-rbac/">
+    <link rel="canonical" href="https://docs.mezzio.dev/mezzio-authorization-rbac/v1/installation/">
     <link rel="shortcut icon" href="https://docs.laminas.dev/img/trademark-laminas-foundation-rgb.svg">
 
-    <title>mezzio-authorization-rbac - Laminas Docs</title>
+    <title>Installation - mezzio-authorization-rbac - Laminas Docs</title>
 
     <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
     
@@ -115,7 +115,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href=".">mezzio-authorization-rbac</a>
+            <a href="../..">mezzio-authorization-rbac</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -130,7 +130,21 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/intro/" class="subnavigation__link">Introduction</a>
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Installation</a>
                             </li>
                         
                     
@@ -144,7 +158,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/installation/" class="subnavigation__link">Installation</a>
+                                <a href="../basic-usage/" class="subnavigation__link">Basic Usage</a>
                             </li>
                         
                     
@@ -158,21 +172,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/basic-usage/" class="subnavigation__link">Basic Usage</a>
-                            </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href="v1/dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
+                                <a href="../dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
                             </li>
                         
                     
@@ -238,6 +238,13 @@
             <div class="col-md-9 col-sm-12 content" role="main">
                 
                 
+                    
+    
+
+    
+    
+
+                
 
                 
                     <nav aria-label="breadcrumb">
@@ -247,7 +254,11 @@
             <li class="breadcrumb-item"><a href="https://docs.mezzio.dev/">Mezzio</a></li>
 
             
-                <li class="breadcrumb-item">mezzio-authorization-rbac</li>
+                <li class="breadcrumb-item"><a href="../..">mezzio-authorization-rbac</a></li>
+
+                
+
+                <li class="breadcrumb-item active" aria-current="page">Installation</li>
             
         
     </ol>
@@ -257,22 +268,126 @@
 
 
 
-    <h1>mezzio-authorization-rbac</h1>
-<p>RBAC permission adapter for mezzio-authorization.</p>
+    <h1>Installation</h1>
+<div class="toc">
+    <h6 class="toc__headline">On this page</h6>
+    <ul class="toc__list">
+        <li class="toc__entry">
+            <a href="#standard-installation" class="toc__link nav-link">Standard Installation</a>
+        </li>
+
+        
+        <li class="toc__entry">
+            <a href="#installation-for-mezzio-and-laminas-mvc-application" class="toc__link nav-link">
+                Installation for a
+                Mezzio
+                
+                
+                Application
+            </a>
+        </li>
+        
+    </ul>
+</div>
 
 
-    <h2>Installation</h2>
-    <h3>Using Composer</h3>
-    <pre><code class="language-bash">$ composer require mezzio/mezzio-authorization-rbac</code></pre>
+<h2 id="standard-installation">Standard Installation</h2>
+<p>To install the library use <a href="https://getcomposer.org/">Composer</a>:</p>
+<pre><code class="language-bash">$ composer require mezzio/mezzio-authorization-rbac</code></pre>
 
 
-<h2>Support</h2>
+
+<h2 id="installation-for-mezzio-and-laminas-mvc-application">
+    Installation for a
+    Mezzio
+    
+    
+    Application
+</h2>
+
+<h3>Installation and Automated Configuration</h3>
+<p>
+    The <a href="https://docs.laminas.dev/laminas-component-installer/">laminas-component-installer</a>
+    is the recommended installation method when using in
+    a Mezzio-based
+    
+     application.
+    It will automatically inject
+    the config-provider
+    
+    
+    in the configuration during the installation process.
+</p>
+
+<blockquote>
+    <h3>Installation Requirements</h3>
+    <p>
+        The following descriptions depends on the laminas-component-installer component,
+         so be sure to have it installed before getting started.
+    </p>
+
+    <h4>Global Installation</h4>
+    <p>
+        With a <a href="https://docs.laminas.dev/laminas-component-installer/#global-installation">global installation</a>
+        of laminas-component-installer it can be used for all projects without a
+        reinstallation.
+    </p>
+    <pre><code class="language-bash">$ composer global require laminas/laminas-component-installer</code></pre>
+    <h4>As Development Dependency</h4>
+    <pre><code class="language-bash">$ composer require --dev laminas/laminas-component-installer</code></pre>
+</blockquote>
+
+<h4>Install mezzio-authorization-rbac and Inject Configuration</h4>
+<p>To install the library use Composer:</p>
+<pre><code class="language-bash">$ composer require mezzio/mezzio-authorization-rbac</code></pre>
+<p>
+    This will install an initial set of dependencies and it will also prompt to
+    inject the component configuration.
+</p>
 <ul>
-    <li>Issues: <a href="https://github.com/mezzio/mezzio-authorization-rbac/issues">github.com/mezzio/mezzio-authorization-rbac/issues</a></li>
-    <li>Source: <a href="https://github.com/mezzio/mezzio-authorization-rbac/">github.com/mezzio/mezzio-authorization-rbac/</a></li>
-    <li>Chat: <a href="https://laminas.dev/chat">laminas.dev/chat</a></li>
-    <li>Forum: <a href="https://discourse.laminas.dev/">discourse.laminas.dev</a></li>
+    
+    <li>For a Mezzio application, choose <code>config/config.php</code>.</li>
+    
+    
 </ul>
+<p>
+    If additional dependencies are to be installed, the option for other packages
+    can be remembered.
+</p>
+
+<details><summary>Installation and Manual Configuration</summary>
+<p>
+    If the installer is not used, the manual configuration is needed to add the
+    component to the application.
+</p>
+
+<h4>Install mezzio-authorization-rbac</h4>
+<p>To install the library use Composer:</p>
+<pre><code class="language-bash">$ composer require mezzio/mezzio-authorization-rbac</code></pre>
+
+
+    <h4>Manual Configuration for a Mezzio-based Application</h4>
+    <p>
+        Add the configuration provider of mezzio-authorization-rbac to the configuration file,
+        e.g. <code>config/config.php</code>:
+    </p>
+
+<pre data-line="5"><code class="language-php">
+$aggregator = new Laminas\ConfigAggregator\ConfigAggregator([
+    // …
+    Mezzio\ConfigProvider::class,
+    Mezzio\Router\ConfigProvider::class,
+    Mezzio\Authorization\Rbac\ConfigProvider, // Add this line
+    // …
+]);
+</code></pre>
+
+
+
+</details>
+
+
+    
 
 
 
@@ -283,12 +398,16 @@
         
         <li class="page-nav__item">
             
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../intro/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
         </li>
 
         
         <li class="page-nav__item">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="v1/intro/">
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../basic-usage/">
                     Next <i class="fa fa-chevron-right"></i>
                 </a>
             
@@ -298,6 +417,15 @@
 
 
 
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/mezzio/mezzio-authorization-rbac/edit/master/docs/book/v1/installation.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
 
                 
             </div>
@@ -322,7 +450,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href=".">mezzio-authorization-rbac</a>
+            <a href="../..">mezzio-authorization-rbac</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -337,7 +465,21 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/intro/" class="subnavigation__link">Introduction</a>
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Installation</a>
                             </li>
                         
                     
@@ -351,7 +493,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/installation/" class="subnavigation__link">Installation</a>
+                                <a href="../basic-usage/" class="subnavigation__link">Basic Usage</a>
                             </li>
                         
                     
@@ -365,21 +507,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/basic-usage/" class="subnavigation__link">Basic Usage</a>
-                            </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href="v1/dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
+                                <a href="../dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
                             </li>
                         
                     
@@ -471,13 +599,13 @@
 </footer>
 
     <script>
-        let base_url = '.',
+        let base_url = '../..',
             project  = "mezzio",
             siteName = 'mezzio-authorization-rbac';
     </script>
     <script src="https://docs.laminas.dev/js/scripts.js"></script>
     
-        <script src="search/main.js"></script>
+        <script src="../../search/main.js"></script>
     
 
     
@@ -506,8 +634,3 @@
 
 
 </html>
-
-<!--
-MkDocs version : 1.1.2
-Build Date UTC : 2021-04-30 14:52:25.741197+00:00
--->

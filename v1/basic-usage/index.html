@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="RBAC permission adapter for mezzio-authorization.">  
-    <link rel="canonical" href="https://docs.mezzio.dev/mezzio-authorization-rbac/">
+    <link rel="canonical" href="https://docs.mezzio.dev/mezzio-authorization-rbac/v1/basic-usage/">
     <link rel="shortcut icon" href="https://docs.laminas.dev/img/trademark-laminas-foundation-rgb.svg">
 
-    <title>mezzio-authorization-rbac - Laminas Docs</title>
+    <title>Basic Usage - mezzio-authorization-rbac - Laminas Docs</title>
 
     <link rel="stylesheet" href="https://docs.laminas.dev/css/styles.css">
     
@@ -115,7 +115,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href=".">mezzio-authorization-rbac</a>
+            <a href="../..">mezzio-authorization-rbac</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -130,7 +130,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/intro/" class="subnavigation__link">Introduction</a>
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
                             </li>
                         
                     
@@ -144,7 +144,21 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/installation/" class="subnavigation__link">Installation</a>
+                                <a href="../installation/" class="subnavigation__link">Installation</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Basic Usage</a>
                             </li>
                         
                     
@@ -158,21 +172,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/basic-usage/" class="subnavigation__link">Basic Usage</a>
-                            </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href="v1/dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
+                                <a href="../dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
                             </li>
                         
                     
@@ -238,6 +238,28 @@
             <div class="col-md-9 col-sm-12 content" role="main">
                 
                 
+                    
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+                
+                    <li class="toc__entry">
+                        <a href="#configure-an-rbac-system" class="toc__link nav-link">Configure an RBAC system</a>
+                    </li>
+                
+                    <li class="toc__entry">
+                        <a href="#custom-authorization-logic" class="toc__link nav-link">Custom Authorization Logic</a>
+                    </li>
+                
+            </ul>
+        </div>
+    
+
+                
 
                 
                     <nav aria-label="breadcrumb">
@@ -247,7 +269,11 @@
             <li class="breadcrumb-item"><a href="https://docs.mezzio.dev/">Mezzio</a></li>
 
             
-                <li class="breadcrumb-item">mezzio-authorization-rbac</li>
+                <li class="breadcrumb-item"><a href="../..">mezzio-authorization-rbac</a></li>
+
+                
+
+                <li class="breadcrumb-item active" aria-current="page">Basic Usage</li>
             
         
     </ol>
@@ -257,22 +283,58 @@
 
 
 
-    <h1>mezzio-authorization-rbac</h1>
-<p>RBAC permission adapter for mezzio-authorization.</p>
 
+    
+    
 
-    <h2>Installation</h2>
-    <h3>Using Composer</h3>
-    <pre><code class="language-bash">$ composer require mezzio/mezzio-authorization-rbac</code></pre>
-
-
-<h2>Support</h2>
+    <h1 id="basic-usage">Basic Usage</h1>
+<h2 id="configure-an-rbac-system">Configure an RBAC system</h2>
+<p>You can configure your RBAC using a configuration file, as follows:</p>
+<pre class="highlight"><code class="language-php">// config/autoload/authorization.local.php
+return [
+    // ...
+    'mezzio-authorization-rbac' =&gt; [
+        'roles' =&gt; [
+            'administrator' =&gt; [],
+            'editor'        =&gt; ['administrator'],
+            'contributor'   =&gt; ['editor'],
+        ],
+        'permissions' =&gt; [
+            'contributor' =&gt; [
+                'admin.dashboard',
+                'admin.posts',
+            ],
+            'editor' =&gt; [
+                'admin.publish',
+            ],
+            'administrator' =&gt; [
+                'admin.settings',
+            ],
+        ],
+    ]
+];</code></pre>
+<p>In the above example, we designed an RBAC system with 3 roles: <code>administator</code>,
+<code>editor</code>, and <code>contributor</code>. We defined a hierarchy of roles as follows:</p>
 <ul>
-    <li>Issues: <a href="https://github.com/mezzio/mezzio-authorization-rbac/issues">github.com/mezzio/mezzio-authorization-rbac/issues</a></li>
-    <li>Source: <a href="https://github.com/mezzio/mezzio-authorization-rbac/">github.com/mezzio/mezzio-authorization-rbac/</a></li>
-    <li>Chat: <a href="https://laminas.dev/chat">laminas.dev/chat</a></li>
-    <li>Forum: <a href="https://discourse.laminas.dev/">discourse.laminas.dev</a></li>
+<li><code>administrator</code> has no parent role.</li>
+<li><code>editor</code> has <code>administrator</code> as a parent. That means <code>administrator</code> inherits
+  the permissions of the <code>editor</code>.</li>
+<li><code>contributor</code> has <code>editor</code> as a parent. That means <code>editor</code> inherits the
+  permissions of <code>contributor</code>, and following the chain, <code>administator</code> inherits
+  the permissions of <code>contributor</code>.</li>
 </ul>
+<p>For each role, we specified an array of permissions. As you can notice, a
+permission is just a string; it can represent anything. In our implementation,
+this string represents a route name.  That means the <code>contributor</code> role can
+access the routes <code>admin.dashboard</code> and <code>admin.posts</code> but cannot access the
+routes <code>admin.publish</code> (assigned to <code>editor</code> role) and <code>admin.settings</code>
+(assigned to <code>administrator</code>).</p>
+<h2 id="custom-authorization-logic">Custom Authorization Logic</h2>
+<p>If you want to change the authorization logic for each permission, you can write
+your own <code>Mezzio\Authorization\AuthorizationInterface</code> implementation.
+That interface defines the following method:</p>
+<pre class="highlight"><code class="language-php">isGranted(string $role, ServerRequestInterface $request): bool;</code></pre>
+<p>where <code>$role</code> is the role and <code>$request</code> is the PSR-7 HTTP request to authorize.</p>
 
 
 
@@ -283,12 +345,16 @@
         
         <li class="page-nav__item">
             
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../installation/">
+                    <i class="fa fa-chevron-left"></i> Previous
+                </a>
+            
         </li>
 
         
         <li class="page-nav__item">
             
-                <a rel="next" class="page-nav__link page-nav__link--next" href="v1/intro/">
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../dynamic-assertion/">
                     Next <i class="fa fa-chevron-right"></i>
                 </a>
             
@@ -298,6 +364,15 @@
 
 
 
+
+    <div class="help-wanted">
+        <p>
+            Found a mistake or want to contribute to the documentation?
+            <a href="https://github.com/mezzio/mezzio-authorization-rbac/edit/master/docs/book/v1/basic-usage.md" target="_blank" class="help-wanted__link">
+                Edit this page on GitHub!
+            </a>
+        </p>
+    </div>
 
                 
             </div>
@@ -322,7 +397,7 @@
                     
     <div class="subnavigation hidden-print">
         <h4 class="subnavigation__title">
-            <a href=".">mezzio-authorization-rbac</a>
+            <a href="../..">mezzio-authorization-rbac</a>
         </h4>
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
@@ -337,7 +412,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/intro/" class="subnavigation__link">Introduction</a>
+                                <a href="../intro/" class="subnavigation__link">Introduction</a>
                             </li>
                         
                     
@@ -351,7 +426,21 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/installation/" class="subnavigation__link">Installation</a>
+                                <a href="../installation/" class="subnavigation__link">Installation</a>
+                            </li>
+                        
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                        
+                            <li class="subnavigation__list-item subnavigation__list-item--active">
+                                <a href="./" class="subnavigation__link">Basic Usage</a>
                             </li>
                         
                     
@@ -365,21 +454,7 @@
                     
                         
                             <li class="subnavigation__list-item ">
-                                <a href="v1/basic-usage/" class="subnavigation__link">Basic Usage</a>
-                            </li>
-                        
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                        
-                            <li class="subnavigation__list-item ">
-                                <a href="v1/dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
+                                <a href="../dynamic-assertion/" class="subnavigation__link">Dynamic Assertion</a>
                             </li>
                         
                     
@@ -471,13 +546,13 @@
 </footer>
 
     <script>
-        let base_url = '.',
+        let base_url = '../..',
             project  = "mezzio",
             siteName = 'mezzio-authorization-rbac';
     </script>
     <script src="https://docs.laminas.dev/js/scripts.js"></script>
     
-        <script src="search/main.js"></script>
+        <script src="../../search/main.js"></script>
     
 
     
@@ -506,8 +581,3 @@
 
 
 </html>
-
-<!--
-MkDocs version : 1.1.2
-Build Date UTC : 2021-04-30 14:52:25.741197+00:00
--->
