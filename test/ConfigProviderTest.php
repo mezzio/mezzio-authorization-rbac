@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @see       https://github.com/mezzio/mezzio-authorization-rbac for the canonical source repository
- * @copyright https://github.com/mezzio/mezzio-authorization-rbac/blob/master/COPYRIGHT.md
- * @license   https://github.com/mezzio/mezzio-authorization-rbac/blob/master/LICENSE.md New BSD License
- */
-
 declare(strict_types=1);
 
 namespace MezzioTest\Authorization\Rbac;
