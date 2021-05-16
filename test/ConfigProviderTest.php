@@ -19,12 +19,12 @@ class ConfigProviderTest extends TestCase
     /** @var ConfigProvider */
     private $provider;
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         $this->provider = new ConfigProvider();
     }
 
-    public function testInvocationReturnsArray()
+    public function testInvocationReturnsArray(): array
     {
         $config = ($this->provider)();
         $this->assertIsArray($config);
@@ -56,14 +56,14 @@ class ConfigProviderTest extends TestCase
         foreach ($json['packages'] as $package) {
             if (isset($package['extra']['laminas']['config-provider'])) {
                 $configProvider = new $package['extra']['laminas']['config-provider']();
-                $config = array_merge_recursive($config, $configProvider());
+                $config         = array_merge_recursive($config, $configProvider());
             }
         }
 
         $config['dependencies']['services']['config'] = [
             'mezzio-authorization-rbac' => ['roles' => [], 'permissions' => []],
         ];
-        $container = $this->getContainer($config['dependencies']);
+        $container                                    = $this->getContainer($config['dependencies']);
 
         $dependencies = $this->provider->getDependencies();
         foreach ($dependencies['factories'] as $name => $factory) {
@@ -75,7 +75,7 @@ class ConfigProviderTest extends TestCase
         }
     }
 
-    private function getContainer(array $dependencies) : ServiceManager
+    private function getContainer(array $dependencies): ServiceManager
     {
         return new ServiceManager($dependencies);
     }
