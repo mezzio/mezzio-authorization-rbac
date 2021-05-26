@@ -15,19 +15,15 @@ use function sprintf;
 
 class LaminasRbac implements AuthorizationInterface
 {
-    /**
-     * @var Rbac
-     */
+    /** @var Rbac */
     private $rbac;
 
-    /**
-     * @var null|AssertionInterface
-     */
+    /** @var null|AssertionInterface */
     private $assertion;
 
-    public function __construct(Rbac $rbac, LaminasRbacAssertionInterface $assertion = null)
+    public function __construct(Rbac $rbac, ?LaminasRbacAssertionInterface $assertion = null)
     {
-        $this->rbac = $rbac;
+        $this->rbac      = $rbac;
         $this->assertion = $assertion;
     }
 
@@ -36,7 +32,7 @@ class LaminasRbac implements AuthorizationInterface
      *
      * @throws Exception\RuntimeException
      */
-    public function isGranted(string $role, ServerRequestInterface $request) : bool
+    public function isGranted(string $role, ServerRequestInterface $request): bool
     {
         $routeResult = $request->getAttribute(RouteResult::class, false);
         if (false === $routeResult) {

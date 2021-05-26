@@ -9,6 +9,7 @@ use Laminas\Permissions\Rbac\Rbac;
 use Mezzio\Authorization\AuthorizationInterface;
 use Mezzio\Authorization\Exception;
 use Psr\Container\ContainerInterface;
+use Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface;
 
 use function sprintf;
 
@@ -17,7 +18,7 @@ class LaminasRbacFactory
     /**
      * @throws Exception\InvalidConfigException
      */
-    public function __invoke(ContainerInterface $container) : AuthorizationInterface
+    public function __invoke(ContainerInterface $container): AuthorizationInterface
     {
         $config = $container->get('config')['mezzio-authorization-rbac'] ?? null;
         if (null === $config) {
@@ -45,8 +46,8 @@ class LaminasRbacFactory
 
         $assertion = $container->has(LaminasRbacAssertionInterface::class)
             ? $container->get(LaminasRbacAssertionInterface::class)
-            : ($container->has(\Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface::class)
-                ? $container->get(\Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface::class)
+            : ($container->has(ZendRbacAssertionInterface::class)
+                ? $container->get(ZendRbacAssertionInterface::class)
                 : null);
 
         return new LaminasRbac($rbac, $assertion);
@@ -55,7 +56,7 @@ class LaminasRbacFactory
     /**
      * @throws Exception\InvalidConfigException
      */
-    private function injectRoles(Rbac $rbac, array $roles) : void
+    private function injectRoles(Rbac $rbac, array $roles): void
     {
         $rbac->setCreateMissingRoles(true);
 
@@ -72,7 +73,7 @@ class LaminasRbacFactory
     /**
      * @throws Exception\InvalidConfigException
      */
-    private function injectPermissions(Rbac $rbac, array $specification) : void
+    private function injectPermissions(Rbac $rbac, array $specification): void
     {
         foreach ($specification as $role => $permissions) {
             foreach ($permissions as $permission) {

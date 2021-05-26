@@ -9,5 +9,5 @@ use Psr\Http\Message\ServerRequestInterface;
 
 interface LaminasRbacAssertionInterface extends AssertionInterface
 {
-    public function setRequest(ServerRequestInterface $request) : void;
+    public function setRequest(ServerRequestInterface $request): void;
 }
