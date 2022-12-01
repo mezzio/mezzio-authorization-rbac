@@ -27,25 +27,25 @@ class ConfigProviderTest extends TestCase
     public function testInvocationReturnsArray(): array
     {
         $config = ($this->provider)();
-        $this->assertIsArray($config);
+        self::assertIsArray($config);
         return $config;
     }
 
     /**
      * @depends testInvocationReturnsArray
      */
-    public function testReturnedArrayContainsDependencies(array $config)
+    public function testReturnedArrayContainsDependencies(array $config): void
     {
-        $this->assertArrayHasKey('dependencies', $config);
-        $this->assertIsArray($config['dependencies']);
-        $this->assertArrayHasKey('factories', $config['dependencies']);
+        self::assertArrayHasKey('dependencies', $config);
+        self::assertIsArray($config['dependencies']);
+        self::assertArrayHasKey('factories', $config['dependencies']);
 
         $factories = $config['dependencies']['factories'];
-        $this->assertIsArray($factories);
-        $this->assertArrayHasKey(LaminasRbac::class, $factories);
+        self::assertIsArray($factories);
+        self::assertArrayHasKey(LaminasRbac::class, $factories);
     }
 
-    public function testServicesDefinedInConfigProvider()
+    public function testServicesDefinedInConfigProvider(): void
     {
         $config = ($this->provider)();
 
@@ -53,7 +53,11 @@ class ConfigProviderTest extends TestCase
             file_get_contents(__DIR__ . '/../composer.lock'),
             true
         );
+        self::assertIsArray($json);
+        self::assertArrayHasKey('packages', $json);
+        self::assertIsArray($json['packages']);
         foreach ($json['packages'] as $package) {
+            self::assertIsArray($package);
             if (isset($package['extra']['laminas']['config-provider'])) {
                 $configProvider = new $package['extra']['laminas']['config-provider']();
                 $config         = array_merge_recursive($config, $configProvider());
@@ -67,8 +71,8 @@ class ConfigProviderTest extends TestCase
 
         $dependencies = $this->provider->getDependencies();
         foreach ($dependencies['factories'] as $name => $factory) {
-            $this->assertTrue($container->has($name), sprintf('Container does not contain service %s', $name));
-            $this->assertIsObject(
+            self::assertTrue($container->has($name), sprintf('Container does not contain service %s', $name));
+            self::assertIsObject(
                 $container->get($name),
                 sprintf('Cannot get service %s from container using factory %s', $name, $factory)
             );
