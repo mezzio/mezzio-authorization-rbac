@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MezzioTest\Authorization\Rbac;
 
+use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\ServiceManager;
 use Mezzio\Authorization\Rbac\ConfigProvider;
 use Mezzio\Authorization\Rbac\LaminasRbac;
@@ -14,6 +15,7 @@ use function file_get_contents;
 use function json_decode;
 use function sprintf;
 
+/** @psalm-import-type ServiceManagerConfigurationType from ConfigInterface */
 class ConfigProviderTest extends TestCase
 {
     /** @var ConfigProvider */
@@ -24,15 +26,19 @@ class ConfigProviderTest extends TestCase
         $this->provider = new ConfigProvider();
     }
 
+    /** @return array{dependencies: ServiceManagerConfigurationType} */
     public function testInvocationReturnsArray(): array
     {
         $config = ($this->provider)();
+        /** @psalm-suppress RedundantCondition */
         self::assertIsArray($config);
         return $config;
     }
 
     /**
+     * @param array{dependencies: ServiceManagerConfigurationType} $config
      * @depends testInvocationReturnsArray
+     * @psalm-suppress RedundantConditionGivenDocblockType
      */
     public function testReturnedArrayContainsDependencies(array $config): void
     {
@@ -40,7 +46,7 @@ class ConfigProviderTest extends TestCase
         self::assertIsArray($config['dependencies']);
         self::assertArrayHasKey('factories', $config['dependencies']);
 
-        $factories = $config['dependencies']['factories'];
+        $factories = $config['dependencies']['factories'] ?? null;
         self::assertIsArray($factories);
         self::assertArrayHasKey(LaminasRbac::class, $factories);
     }
@@ -70,7 +76,10 @@ class ConfigProviderTest extends TestCase
         $container                                    = $this->getContainer($config['dependencies']);
 
         $dependencies = $this->provider->getDependencies();
-        foreach ($dependencies['factories'] as $name => $factory) {
+        $factories    = $dependencies['factories'] ?? null;
+        self::assertIsArray($factories);
+        foreach ($factories as $name => $factory) {
+            self::assertIsString($factory);
             self::assertTrue($container->has($name), sprintf('Container does not contain service %s', $name));
             self::assertIsObject(
                 $container->get($name),
@@ -79,6 +88,7 @@ class ConfigProviderTest extends TestCase
         }
     }
 
+    /** @param ServiceManagerConfigurationType $dependencies */
     private function getContainer(array $dependencies): ServiceManager
     {
         return new ServiceManager($dependencies);
