@@ -8,49 +8,45 @@ use Mezzio\Authorization\Exception;
 use Mezzio\Authorization\Rbac\LaminasRbac;
 use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
 use Mezzio\Authorization\Rbac\LaminasRbacFactory;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Prophecy\PhpUnit\ProphecyTrait;
-use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Container\ContainerInterface;
-use Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface;
 
 class LaminasRbacFactoryTest extends TestCase
 {
-    use ProphecyTrait;
-
-    /** @var ContainerInterface|ObjectProphecy */
-    private $container;
+    /** @var ContainerInterface&MockObject */
+    private ContainerInterface $container;
 
     protected function setUp(): void
     {
-        $this->container = $this->prophesize(ContainerInterface::class);
+        $this->container = $this->createMock(ContainerInterface::class);
     }
 
-    public function testFactoryWithoutConfig()
+    public function testFactoryWithoutConfig(): void
     {
-        $this->container->get('config')->willReturn([]);
+        $this->container->method('get')->with('config')->willReturn([]);
 
         $factory = new LaminasRbacFactory();
 
         $this->expectException(Exception\InvalidConfigException::class);
         $this->expectExceptionMessage('mezzio-authorization-rbac');
-        $factory($this->container->reveal());
+        $factory($this->container);
     }
 
-    public function testFactoryWithoutLaminasRbacConfig()
+    public function testFactoryWithoutLaminasRbacConfig(): void
     {
-        $this->container->get('config')->willReturn(['mezzio-authorization-rbac' => []]);
+        $this->container->method('get')->with('config')->willReturn(['mezzio-authorization-rbac' => []]);
 
         $factory = new LaminasRbacFactory();
 
         $this->expectException(Exception\InvalidConfigException::class);
         $this->expectExceptionMessage('mezzio-authorization-rbac.roles');
-        $factory($this->container->reveal());
+        $factory($this->container);
     }
 
-    public function testFactoryWithoutPermissions()
+    public function testFactoryWithoutPermissions(): void
     {
-        $this->container->get('config')->willReturn([
+        $this->container->method('get')->with('config')->willReturn([
             'mezzio-authorization-rbac' => [
                 'roles' => [],
             ],
@@ -60,46 +56,55 @@ class LaminasRbacFactoryTest extends TestCase
 
         $this->expectException(Exception\InvalidConfigException::class);
         $this->expectExceptionMessage('mezzio-authorization-rbac.permissions');
-        $factory($this->container->reveal());
+        $factory($this->container);
     }
 
-    public function testFactoryWithEmptyRolesPermissionsWithoutAssertion()
+    public function testFactoryWithEmptyRolesPermissionsWithoutAssertion(): void
     {
-        $this->container->get('config')->willReturn([
-            'mezzio-authorization-rbac' => [
-                'roles'       => [],
-                'permissions' => [],
-            ],
-        ]);
-        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(false);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(false);
-
-        $factory     = new LaminasRbacFactory();
-        $laminasRbac = $factory($this->container->reveal());
-        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
-    }
-
-    public function testFactoryWithEmptyRolesPermissionsWithAssertion()
-    {
-        $this->container->get('config')->willReturn([
+        $this->container->method('get')->with('config')->willReturn([
             'mezzio-authorization-rbac' => [
                 'roles'       => [],
                 'permissions' => [],
             ],
         ]);
 
-        $assertion = $this->prophesize(LaminasRbacAssertionInterface::class);
-        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(true);
-        $this->container->get(LaminasRbacAssertionInterface::class)->willReturn($assertion->reveal());
+        $this->container->method('has')
+            ->withConsecutive(
+                [LaminasRbacAssertionInterface::class],
+                ['Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface']
+            )->willReturn(false, false);
 
         $factory     = new LaminasRbacFactory();
-        $laminasRbac = $factory($this->container->reveal());
-        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
+        $laminasRbac = $factory($this->container);
+        self::assertInstanceOf(LaminasRbac::class, $laminasRbac);
     }
 
-    public function testFactoryWithoutAssertion()
+    public function testFactoryWithEmptyRolesPermissionsWithAssertion(): void
     {
-        $this->container->get('config')->willReturn([
+        $assertion = $this->createMock(LaminasRbacAssertionInterface::class);
+        $config    = [
+            'mezzio-authorization-rbac' => [
+                'roles'       => [],
+                'permissions' => [],
+            ],
+        ];
+
+        $this->container->method('get')
+            ->willReturnMap([
+                ['config', $config],
+                [LaminasRbacAssertionInterface::class, $assertion],
+            ]);
+
+        $this->container->method('has')->with(LaminasRbacAssertionInterface::class)->willReturn(true);
+
+        $factory     = new LaminasRbacFactory();
+        $laminasRbac = $factory($this->container);
+        self::assertInstanceOf(LaminasRbac::class, $laminasRbac);
+    }
+
+    public function testFactoryWithoutAssertion(): void
+    {
+        $config = [
             'mezzio-authorization-rbac' => [
                 'roles'       => [
                     'administrator' => [],
@@ -119,18 +124,22 @@ class LaminasRbacFactoryTest extends TestCase
                     ],
                 ],
             ],
-        ]);
-        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(false);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(false);
+        ];
+        $this->container->method('get')->with('config')->willReturn($config);
+        $this->container->method('has')
+            ->withConsecutive(
+                [LaminasRbacAssertionInterface::class],
+                ['Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface'],
+            )->willReturn(false, false);
 
         $factory     = new LaminasRbacFactory();
-        $laminasRbac = $factory($this->container->reveal());
-        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
+        $laminasRbac = $factory($this->container);
+        self::assertInstanceOf(LaminasRbac::class, $laminasRbac);
     }
 
-    public function testFactoryWithAssertion()
+    public function testFactoryWithAssertion(): void
     {
-        $this->container->get('config')->willReturn([
+        $config    = [
             'mezzio-authorization-rbac' => [
                 'roles'       => [
                     'administrator' => [],
@@ -150,19 +159,25 @@ class LaminasRbacFactoryTest extends TestCase
                     ],
                 ],
             ],
-        ]);
-        $assertion = $this->prophesize(LaminasRbacAssertionInterface::class);
-        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(true);
-        $this->container->get(LaminasRbacAssertionInterface::class)->willReturn($assertion->reveal());
+        ];
+        $assertion = $this->createMock(LaminasRbacAssertionInterface::class);
+
+        $this->container->method('has')->with(LaminasRbacAssertionInterface::class)->willReturn(true);
+
+        $this->container->method('get')
+            ->willReturnMap([
+                ['config', $config],
+                [LaminasRbacAssertionInterface::class, $assertion],
+            ]);
 
         $factory     = new LaminasRbacFactory();
-        $laminasRbac = $factory($this->container->reveal());
-        $this->assertInstanceOf(LaminasRbac::class, $laminasRbac);
+        $laminasRbac = $factory($this->container);
+        self::assertInstanceOf(LaminasRbac::class, $laminasRbac);
     }
 
-    public function testFactoryWithInvalidRole()
+    public function testFactoryWithInvalidRole(): void
     {
-        $this->container->get('config')->willReturn([
+        $this->container->method('get')->with('config')->willReturn([
             'mezzio-authorization-rbac' => [
                 'roles'       => [
                     1 => [],
@@ -170,18 +185,22 @@ class LaminasRbacFactoryTest extends TestCase
                 'permissions' => [],
             ],
         ]);
-        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(false);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(false);
+
+        $this->container->method('has')
+            ->withConsecutive([
+                LaminasRbacAssertionInterface::class,
+                'Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface',
+            ])->willReturn(false, false);
 
         $factory = new LaminasRbacFactory();
 
         $this->expectException(Exception\InvalidConfigException::class);
-        $factory($this->container->reveal());
+        $factory($this->container);
     }
 
-    public function testFactoryWithUnknownRole()
+    public function testFactoryWithUnknownRole(): void
     {
-        $this->container->get('config')->willReturn([
+        $this->container->method('get')->with('config')->willReturn([
             'mezzio-authorization-rbac' => [
                 'roles'       => [
                     'administrator' => [],
@@ -194,12 +213,15 @@ class LaminasRbacFactoryTest extends TestCase
                 ],
             ],
         ]);
-        $this->container->has(LaminasRbacAssertionInterface::class)->willReturn(false);
-        $this->container->has(ZendRbacAssertionInterface::class)->willReturn(false);
+        $this->container->method('has')
+            ->withConsecutive([
+                LaminasRbacAssertionInterface::class,
+                'Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface',
+            ])->willReturn(false, false);
 
         $factory = new LaminasRbacFactory();
 
         $this->expectException(Exception\InvalidConfigException::class);
-        $factory($this->container->reveal());
+        $factory($this->container);
     }
 }
