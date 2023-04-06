@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Mezzio\Authorization\Rbac;
 
+use ArrayAccess;
 use Laminas\Permissions\Rbac\Exception\ExceptionInterface as RbacExceptionInterface;
 use Laminas\Permissions\Rbac\Rbac;
 use Mezzio\Authorization\AuthorizationInterface;
@@ -11,6 +12,7 @@ use Mezzio\Authorization\Exception;
 use Psr\Container\ContainerInterface;
 use Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface;
 
+use function is_array;
 use function sprintf;
 
 class LaminasRbacFactory
@@ -21,7 +23,7 @@ class LaminasRbacFactory
     public function __invoke(ContainerInterface $container): AuthorizationInterface
     {
         $config = $container->get('config')['mezzio-authorization-rbac'] ?? null;
-        if (null === $config) {
+        if (! is_array($config) && ! $config instanceof ArrayAccess) {
             throw new Exception\InvalidConfigException(sprintf(
                 'Cannot create %s instance; no "mezzio-authorization-rbac" config key present',
                 LaminasRbac::class
