@@ -1,38 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="5.4.0@62db5d4f6a7ae0a20f7cc5a4952d730272fc0863">
+<files psalm-version="5.9.0@8b9ad1eb9e8b7d3101f949291da2b9f7767cd163">
   <file src="src/LaminasRbac.php">
-    <MixedArgument occurrences="1">
+    <MixedArgument>
       <code>$routeName</code>
     </MixedArgument>
-    <MixedAssignment occurrences="2">
+    <MixedAssignment>
       <code>$routeName</code>
       <code>$routeResult</code>
     </MixedAssignment>
-    <MixedMethodCall occurrences="2">
+    <MixedMethodCall>
       <code>getMatchedRouteName</code>
       <code>isFailure</code>
     </MixedMethodCall>
-    <UndefinedInterfaceMethod occurrences="1">
+    <UndefinedInterfaceMethod>
       <code>setRequest</code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="src/LaminasRbacAssertionInterface.php">
+    <PossiblyUnusedMethod>
+      <code>setRequest</code>
+    </PossiblyUnusedMethod>
+  </file>
   <file src="src/LaminasRbacFactory.php">
-    <MixedArgument occurrences="5">
+    <MixedArgument>
       <code>$assertion</code>
-      <code>$config['permissions']</code>
-      <code>$config['roles']</code>
+      <code><![CDATA[$config['permissions']]]></code>
+      <code><![CDATA[$config['roles']]]></code>
       <code>$parents</code>
       <code>$permission</code>
     </MixedArgument>
-    <MixedArgumentTypeCoercion occurrences="2">
+    <MixedArgumentTypeCoercion>
       <code>$role</code>
       <code>$role</code>
     </MixedArgumentTypeCoercion>
-    <MixedArrayAccess occurrences="2">
-      <code>$config['permissions']</code>
-      <code>$config['roles']</code>
+    <MixedArrayAccess>
+      <code><![CDATA[$config['permissions']]]></code>
+      <code><![CDATA[$config['roles']]]></code>
     </MixedArrayAccess>
-    <MixedAssignment occurrences="5">
+    <MixedAssignment>
       <code>$assertion</code>
       <code>$config</code>
       <code>$parents</code>
@@ -41,17 +46,17 @@
     </MixedAssignment>
   </file>
   <file src="test/ConfigProviderTest.php">
-    <InvalidFunctionCall occurrences="1">
+    <InvalidFunctionCall>
       <code>$configProvider()</code>
     </InvalidFunctionCall>
-    <MixedArgument occurrences="1">
+    <MixedArgument>
       <code>$configProvider()</code>
     </MixedArgument>
-    <MixedArrayAccess occurrences="1">
-      <code>$package['extra']['laminas']['config-provider']</code>
+    <MixedArrayAccess>
+      <code><![CDATA[$package['extra']['laminas']['config-provider']]]></code>
     </MixedArrayAccess>
-    <MixedMethodCall occurrences="1">
-      <code>new $package['extra']['laminas']['config-provider']()</code>
+    <MixedMethodCall>
+      <code><![CDATA[new $package['extra']['laminas']['config-provider']()]]></code>
     </MixedMethodCall>
   </file>
 </files>

@@ -8,6 +8,7 @@ use Laminas\ServiceManager\ConfigInterface;
 use Laminas\ServiceManager\ServiceManager;
 use Mezzio\Authorization\Rbac\ConfigProvider;
 use Mezzio\Authorization\Rbac\LaminasRbac;
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 
 use function array_merge_recursive;
@@ -37,9 +38,9 @@ class ConfigProviderTest extends TestCase
 
     /**
      * @param array{dependencies: ServiceManagerConfigurationType} $config
-     * @depends testInvocationReturnsArray
      * @psalm-suppress RedundantConditionGivenDocblockType
      */
+    #[Depends('testInvocationReturnsArray')]
     public function testReturnedArrayContainsDependencies(array $config): void
     {
         self::assertArrayHasKey('dependencies', $config);

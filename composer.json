@@ -25,7 +25,7 @@
             "composer/package-versions-deprecated": true
         },
         "platform": {
-            "php": "8.0.99"
+            "php": "8.1.99"
         }
     },
     "extra": {
@@ -34,7 +34,7 @@
         }
     },
     "require": {
-        "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
+        "php": "~8.1.0 || ~8.2.0",
         "laminas/laminas-permissions-rbac": "^3.0",
         "mezzio/mezzio-authorization": "^1.0",
         "mezzio/mezzio-router": "^3.0",
@@ -44,13 +44,12 @@
     "require-dev": {
         "laminas/laminas-coding-standard": "~2.5.0",
         "laminas/laminas-servicemanager": "^3.20",
-        "phpunit/phpunit": "^9.5.28",
+        "phpunit/phpunit": "^10.0.19",
         "psalm/plugin-phpunit": "^0.18.4",
-        "vimeo/psalm": "^5.4"
+        "vimeo/psalm": "^5.9"
     },
     "conflict": {
         "container-interop/container-interop": "<1.2.0",
-        "phpspec/prophecy": "<1.10.2",
         "zendframework/zend-expressive-authorization-rbac": "*"
     },
     "autoload": {
