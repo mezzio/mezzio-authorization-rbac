@@ -39,7 +39,7 @@
         "mezzio/mezzio-authorization": "^1.0",
         "mezzio/mezzio-router": "^3.0",
         "psr/container": "^1.0 || ^2.0",
-        "psr/http-message": "^1.0.1"
+        "psr/http-message": "^1.0.1 || ^2.0.0"
     },
     "require-dev": {
         "laminas/laminas-coding-standard": "~2.5.0",
