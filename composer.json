@@ -44,9 +44,9 @@
     "require-dev": {
         "laminas/laminas-coding-standard": "~2.5.0",
         "laminas/laminas-servicemanager": "^4.0",
-        "phpunit/phpunit": "^10.1.0",
+        "phpunit/phpunit": "^10.5.11",
         "psalm/plugin-phpunit": "^0.18.4",
-        "vimeo/psalm": "^5.9"
+        "vimeo/psalm": "^5.22.2"
     },
     "conflict": {
         "container-interop/container-interop": "<1.2.0",
