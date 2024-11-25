@@ -64,29 +64,29 @@
         },
         {
             "name": "laminas/laminas-permissions-rbac",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-permissions-rbac.git",
-                "reference": "6699e9b95fb360b921b2e6d655977d4786da0443"
+                "reference": "0fbde38f0cc2b462856e8a5edeaa26eb97dd23be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-permissions-rbac/zipball/6699e9b95fb360b921b2e6d655977d4786da0443",
-                "reference": "6699e9b95fb360b921b2e6d655977d4786da0443",
+                "url": "https://api.github.com/repos/laminas/laminas-permissions-rbac/zipball/0fbde38f0cc2b462856e8a5edeaa26eb97dd23be",
+                "reference": "0fbde38f0cc2b462856e8a5edeaa26eb97dd23be",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
             },
             "conflict": {
                 "zendframework/zend-permissions-rbac": "*"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "~2.5.0",
-                "phpunit/phpunit": "^10.1.2",
-                "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.10"
+                "laminas/laminas-coding-standard": "~3.0.0",
+                "phpunit/phpunit": "^10.5.38",
+                "psalm/plugin-phpunit": "^0.19.0",
+                "vimeo/psalm": "^5.26.1"
             },
             "type": "library",
             "autoload": {
@@ -120,7 +120,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-11-27T21:55:58+00:00"
+            "time": "2024-11-21T21:46:24+00:00"
         },
         {
             "name": "mezzio/mezzio-authentication",
