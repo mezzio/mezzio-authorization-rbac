@@ -14,6 +14,7 @@ use function assert;
 use function is_string;
 use function sprintf;
 
+/** @final */
 class LaminasRbac implements AuthorizationInterface
 {
     public function __construct(

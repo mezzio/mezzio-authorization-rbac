@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-class LaminasRbacTest extends TestCase
+final class LaminasRbacTest extends TestCase
 {
     private Rbac&MockObject $rbac;
     private LaminasRbacAssertionInterface&MockObject $assertion;

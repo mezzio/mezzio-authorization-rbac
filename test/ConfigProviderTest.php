@@ -16,7 +16,7 @@ use function json_decode;
 use function sprintf;
 
 /** @psalm-import-type ServiceManagerConfiguration from ServiceManager */
-class ConfigProviderTest extends TestCase
+final class ConfigProviderTest extends TestCase
 {
     /** @var ConfigProvider */
     private $provider;
@@ -55,8 +55,10 @@ class ConfigProviderTest extends TestCase
     {
         $config = ($this->provider)();
 
+        $lockContents = file_get_contents(__DIR__ . '/../composer.lock');
+        self::assertNotFalse($lockContents);
         $json = json_decode(
-            file_get_contents(__DIR__ . '/../composer.lock'),
+            $lockContents,
             true
         );
         self::assertIsArray($json);
