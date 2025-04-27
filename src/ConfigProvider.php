@@ -6,7 +6,10 @@ namespace Mezzio\Authorization\Rbac;
 
 use Laminas\ServiceManager\ServiceManager;
 
-/** @psalm-import-type ServiceManagerConfiguration from ServiceManager */
+/**
+ * @psalm-import-type ServiceManagerConfiguration from ServiceManager
+ * @final
+ */
 class ConfigProvider
 {
     /** @return array{dependencies: ServiceManagerConfiguration} */

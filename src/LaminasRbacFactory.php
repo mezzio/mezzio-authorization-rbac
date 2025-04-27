@@ -15,6 +15,7 @@ use Zend\Expressive\Authorization\Rbac\ZendRbacAssertionInterface;
 use function is_array;
 use function sprintf;
 
+/** @final */
 class LaminasRbacFactory
 {
     /**

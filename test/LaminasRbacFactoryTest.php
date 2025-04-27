@@ -10,7 +10,7 @@ use Mezzio\Authorization\Rbac\LaminasRbacAssertionInterface;
 use Mezzio\Authorization\Rbac\LaminasRbacFactory;
 use PHPUnit\Framework\TestCase;
 
-class LaminasRbacFactoryTest extends TestCase
+final class LaminasRbacFactoryTest extends TestCase
 {
     private InMemoryContainer $container;
 

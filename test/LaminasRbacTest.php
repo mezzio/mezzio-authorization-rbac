@@ -13,14 +13,12 @@ use Mezzio\Router\RouteResult;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
-class LaminasRbacTest extends TestCase
+final class LaminasRbacTest extends TestCase
 {
-    /** @var Rbac&MockObject */
-    private Rbac $rbac;
-
-    /** @var LaminasRbacAssertionInterface&MockObject */
-    private LaminasRbacAssertionInterface $assertion;
+    private Rbac&MockObject $rbac;
+    private LaminasRbacAssertionInterface&MockObject $assertion;
 
     protected function setUp(): void
     {
@@ -148,10 +146,12 @@ class LaminasRbacTest extends TestCase
 
     private function getSuccessRouteResult(string $routeName): RouteResult
     {
-        $route = $this->createMock(Route::class);
-        $route->method('getName')->willReturn($routeName);
-
-        return RouteResult::fromRoute($route);
+        return RouteResult::fromRoute(new Route(
+            '/foo',
+            $this->createMock(MiddlewareInterface::class),
+            null,
+            $routeName,
+        ));
     }
 
     /** @param list<string>|null $methods */
