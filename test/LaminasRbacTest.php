@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace MezzioTest\Authorization\Rbac;
 
+use Fig\Http\Message\RequestMethodInterface;
 use Laminas\Permissions\Rbac\Rbac;
 use Mezzio\Authorization\Exception;
 use Mezzio\Authorization\Rbac\LaminasRbac;
@@ -149,7 +150,7 @@ final class LaminasRbacTest extends TestCase
         return RouteResult::fromRoute(new Route(
             '/foo',
             $this->createMock(MiddlewareInterface::class),
-            null,
+            [RequestMethodInterface::METHOD_GET],
             $routeName,
         ));
     }
