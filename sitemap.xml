@@ -2,22 +2,22 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://docs.mezzio.dev/mezzio-authorization-rbac/</loc>
-         <lastmod>2025-10-15</lastmod>
+         <lastmod>2026-03-06</lastmod>
     </url>
     <url>
          <loc>https://docs.mezzio.dev/mezzio-authorization-rbac/v1/basic-usage/</loc>
-         <lastmod>2025-10-15</lastmod>
+         <lastmod>2026-03-06</lastmod>
     </url>
     <url>
          <loc>https://docs.mezzio.dev/mezzio-authorization-rbac/v1/dynamic-assertion/</loc>
-         <lastmod>2025-10-15</lastmod>
+         <lastmod>2026-03-06</lastmod>
     </url>
     <url>
          <loc>https://docs.mezzio.dev/mezzio-authorization-rbac/v1/installation/</loc>
-         <lastmod>2025-10-15</lastmod>
+         <lastmod>2026-03-06</lastmod>
     </url>
     <url>
          <loc>https://docs.mezzio.dev/mezzio-authorization-rbac/v1/intro/</loc>
-         <lastmod>2025-10-15</lastmod>
+         <lastmod>2026-03-06</lastmod>
     </url>
 </urlset>
