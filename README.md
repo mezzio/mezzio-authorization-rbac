@@ -18,7 +18,6 @@
 > One team member has a Ukrainian relative who fled her home with her son. The train was delayed due to bombing on the road ahead. We have friends who are hiding in bomb shelters. We anxiously follow up on them after the air raids, which indiscriminately fire at hospitals, schools, kindergartens and houses. We're not taking this from any media. These are our actual experiences.
 >
 > You trust us enough to use our software. We ask that you trust us to say the truth on this. We need your help. Go out and protest this unnecessary war. Stop the bloodshed. Say "stop the war!"
-[![Coverage Status](https://coveralls.io/repos/github/mezzio/mezzio-authorization-rbac/badge.svg?branch=master)](https://coveralls.io/github/mezzio/mezzio-authorization-rbac?branch=master)
 
 This library provides a laminas-rbac adapter for mezzio-authorization.
 
