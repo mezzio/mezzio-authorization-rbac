@@ -6,3 +6,6 @@
 /phpunit.xml
 /vendor/
 /psalm.xml
+/doc/html/
+/documentation-theme/
+.markdownlint.json
